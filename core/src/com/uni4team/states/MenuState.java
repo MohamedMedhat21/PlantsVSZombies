@@ -3,7 +3,7 @@ package com.uni4team.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.uni4team.DesktopMain;
+import com.uni4team.PlantsVSZombiesGame;
 
 public class MenuState extends States{
     private Texture background;

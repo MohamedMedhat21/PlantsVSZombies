@@ -11,25 +11,13 @@ import com.uni4team.states.MenuState;
 
 import java.awt.*;
 
-<<<<<<< Updated upstream:core/src/com/uni4team/PlantsVSZombiesGame.java
 public class PlantsVSZombiesGame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
-||||||| merged common ancestors:core/src/com/uni4team/DesktopMain.java
-public class DesktopMain extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	
-=======
-public class DesktopMain extends ApplicationAdapter {
 	public static final int WIDTH = 1024;
 	public static final int HEIGTH = 768;
 	public static final String TITLE = "Plants VS Zombies";
 	private GameStateManager gsm;
 	private SpriteBatch batch;
 	private Music music;
->>>>>>> Stashed changes:core/src/com/uni4team/DesktopMain.java
 	@Override
 	public void create () {
 		Gdx.graphics.setWindowedMode(WIDTH, HEIGTH);
