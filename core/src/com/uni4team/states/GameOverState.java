@@ -12,11 +12,6 @@ import java.awt.*;
 
 
 public class GameOverState extends States{
-    /*
-    private Label levelLabel;
-    levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-    countdownLabel.setText(String.format("%03d", worldTimer));
-     */
     private Label GameOver;
     private Label score;
     private Label scoreINT;
