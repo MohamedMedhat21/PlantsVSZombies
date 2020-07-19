@@ -1,43 +1,60 @@
 package com.uni4team.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.uni4team.sprites.PeaShooter;
 import javafx.util.Pair;
 
 import java.util.*;
 
-public class PlayState extends States{
+
+public class PlayState extends States {
     private Texture bg;
-    private Texture peaShooter;
-    private int backyardWidth, backyardHeight;
-    private int addNewPea = 0;
-    private Map<Pair<Integer, Integer>, Boolean> mp;
-    private List<Pair<Integer, Integer>> drawPeaShooter;
+    private int backgroundWidth, backgroundHeight;
+    private int gardenWidth, gardenHeight;
+    private Rectangle rectangle;
+    private ShapeRenderer shape;
+    private PeaShooter peaShooter;
+    private Map<Pair<Integer, Integer>, Boolean> positions;
+    private int posx , posy;
+    private boolean selectPeashooter;
+    private List<PeaShooter> peaOnScreen;
     public PlayState(GameStateManager gsm) {
         super(gsm);
         bg = new Texture("backyardResized.jpg");
-        peaShooter = new Texture("PeaShooter2.gif");
-        backyardWidth = bg.getWidth();
-        backyardHeight = bg.getHeight();
-        drawPeaShooter = new ArrayList<>();
-        mp = new HashMap<>();
-        mp.put(new Pair(3, 150), false);
-        mp.put(new Pair(3, 250), false);
-        mp.put(new Pair(3, 350), false);
-        mp.put(new Pair(3, 450), false);
-        mp.put(new Pair(3, 550), false);
+        backgroundWidth = bg.getWidth();
+        backgroundHeight = bg.getHeight();
+        gardenWidth = 81;
+        gardenHeight = 139;
+        selectPeashooter = false;
+        peaOnScreen = new ArrayList<>();
+        rectangle = new Rectangle();
+        shape = new ShapeRenderer();
+        rectangle.setHeight(gardenHeight);
+        rectangle.setWidth(gardenWidth);
+        rectangle.setPosition(250,35);
+        peaShooter = new PeaShooter(2, 250);
+        positions = new HashMap<>();
+        for (int w = (int)(rectangle.getX()); w < backgroundWidth - 5; w += rectangle.width)
+        {
+            for (int h = (int)(rectangle.getY()); h < backgroundHeight; h += rectangle.height)
+            {
+                positions.put(new Pair(w,h), true);
+            }
+        }
+
     }
+
 
     @Override
     public void handleInput() {
-        if(Gdx.input.justTouched()){
-            gsm.set(new GameOverState(gsm));
-        }
-    }
 
+    }
     //TODO: check if zombie entered the house, call GameOverState
     @Override
     public void update(float dt) {
@@ -46,37 +63,78 @@ public class PlayState extends States{
 
     @Override
     public void render(SpriteBatch sb) {
-        addNewPea++;
+
         Gdx.graphics.setWindowedMode(1024, 768);
+
         sb.begin();
         sb.draw(bg, 0, 0);
-        if(addNewPea % 500 == 0){
-            int minY = 10000;
-            Boolean foundSpace = false;
-            Set<Pair<Integer, Integer>> st = mp.keySet();
-            for(Pair<Integer, Integer> pr : st){
-                if(mp.get(pr) == false){
-                    minY = Math.min(pr.getValue(), minY);
-                    foundSpace = true;
+        peaShooter.render(sb);
+
+        for (int i = 0 ; i < peaOnScreen.size() ; i++)
+        {
+            peaOnScreen.get(i).render(sb);
+        }
+        sb.end();
+
+        if(Gdx.input.justTouched()){
+            posx = Gdx.input.getX();
+         posy = Gdx.input.getY();
+         System.out.printf("%d , %d\n" , posx,posy);
+            if(posx >= peaShooter.position.getKey() &&  posx <= peaShooter.position.getKey() - peaShooter.peaShooterGIF.getWidth() && posy >= peaShooter.position.getValue() && posy <= -1*peaShooter.peaShooterGIF.getHeight() + peaShooter.position.getValue())
+            {
+                System.out.println("yes");
+                selectPeashooter = true;
+            }
+            else if(selectPeashooter)
+            {
+                selectPeashooter = false;
+                Set<Pair<Integer, Integer>> st = positions.keySet();
+                for (Pair<Integer, Integer> pr : st){
+                    if(positions.get(pr) == true && posx >= pr.getKey() &&  posx <= pr.getKey() + gardenWidth && posy >= pr.getValue() && posy <= gardenHeight + pr.getValue())
+                    {
+                        PeaShooter pea = new PeaShooter(pr.getKey(), pr.getValue());
+                        peaOnScreen.add(pea);
+                        positions.remove(pr);
+                        positions.put(pr, false);
+                        break;
+                    }
                 }
             }
-            if(foundSpace == true){
-                mp.remove(new Pair(3, minY));
-                mp.put(new Pair(3, minY), true);
-                drawPeaShooter.add(new Pair(3, minY));
-            }
         }
-        for(Pair<Integer, Integer> pr: drawPeaShooter)
-            sb.draw(peaShooter, pr.getKey(), pr.getValue());
-        sb.end();
+
+        if(selectPeashooter)
+        {
+            System.out.println("hello");
+            shape.begin(ShapeRenderer.ShapeType.Line);
+        shape.rect(peaShooter.position.getKey(), peaShooter.position.getValue(), peaShooter.peaShooterGIF.getWidth(), peaShooter.peaShooterGIF.getHeight());
+        shape.setColor(Color.BLUE);
+        shape.end();
+        }
+
+//        shape.begin(ShapeRenderer.ShapeType.Line);
+//        shape.rect(rectangle.getX(), rectangle.getY(), rectangle.width, rectangle.height);
+//        shape.setColor(Color.PURPLE);
+//        shape.end();
+
     }
 
     @Override
     public void dispose() {
+        shape.dispose();
+        peaShooter.dispose();
         bg.dispose();
         System.out.println("Play state dispose");
     }
 
-    private void updateGround() {
-    }
+//    private void updateGround() {
+//    }
+//    int posX, posY;
+//    @Override
+//    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+//        //posX = screenX - backgroundWidth/2;
+//        //posY = Gdx.graphics.getHeight() - screenY - backgroundHeight/2;
+//        posX = Gdx.graphics.getWidth()/2 - backgroundWidth/2;
+//        posY = Gdx.graphics.getHeight()/2 - backgroundHeight/2;
+//        return false;
+//    }
 }
