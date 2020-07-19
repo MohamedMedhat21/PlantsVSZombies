@@ -30,7 +30,7 @@ public class MenuState extends States{
 
     @Override
     public void render(SpriteBatch sb) {
-        Gdx.graphics.setWindowedMode(1024, 768);
+      //  Gdx.graphics.setWindowedMode(1024, 768);
         sb.begin();
         sb.draw(background, 0, 0);
         sb.end();

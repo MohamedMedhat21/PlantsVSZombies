@@ -7,7 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.uni4team.sprites.PeaShooter;
+import com.uni4team.sprites.StandardZombie;
+import com.uni4team.sprites.Zombies;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -21,9 +24,12 @@ public class PlayState extends States {
     private ShapeRenderer shape;
     private PeaShooter peaShooter;
     private Map<Pair<Integer, Integer>, Boolean> positions;
-    private int posx , posy;
+    private int posx, posy;
     private boolean selectPeashooter;
     private List<PeaShooter> peaOnScreen;
+    //------------------------------------------------------
+    private StandardZombie standardZombie;
+
     public PlayState(GameStateManager gsm) {
         super(gsm);
         bg = new Texture("backyardResized.jpg");
@@ -37,14 +43,16 @@ public class PlayState extends States {
         shape = new ShapeRenderer();
         rectangle.setHeight(gardenHeight);
         rectangle.setWidth(gardenWidth);
-        rectangle.setPosition(250,35);
+        rectangle.setPosition(250, 35);
         peaShooter = new PeaShooter(2, 250);
         positions = new HashMap<>();
-        for (int w = (int)(rectangle.getX()); w < backgroundWidth - 5; w += rectangle.width)
-        {
-            for (int h = (int)(rectangle.getY()); h < backgroundHeight; h += rectangle.height)
-            {
-                positions.put(new Pair(w,h), true);
+        Zombies.arrayOfZombies = new Array<Zombies>();
+        for (int i = 4; i >= 1; i--) {
+            Zombies.arrayOfZombies.add(new StandardZombie(1200, 700, 100 * i - 300, 1 + i));
+        }
+        for (int w = (int) (rectangle.getX()); w < backgroundWidth - 5; w += rectangle.width) {
+            for (int h = (int) (rectangle.getY()); h < backgroundHeight; h += rectangle.height) {
+                positions.put(new Pair(w, h), true);
             }
         }
 
@@ -55,43 +63,43 @@ public class PlayState extends States {
     public void handleInput() {
 
     }
+
     //TODO: check if zombie entered the house, call GameOverState
     @Override
     public void update(float dt) {
         handleInput();
+        for (Zombies zombie : Zombies.arrayOfZombies) {
+            zombie.update(dt);
+        }
     }
 
     @Override
     public void render(SpriteBatch sb) {
 
-        Gdx.graphics.setWindowedMode(1024, 768);
-
         sb.begin();
         sb.draw(bg, 0, 0);
+        for (Zombies zombie : Zombies.arrayOfZombies) {
+            sb.draw(zombie.getZombieTexture(), zombie.getPostion().x, zombie.getPostion().y);
+        }
         peaShooter.render(sb);
 
-        for (int i = 0 ; i < peaOnScreen.size() ; i++)
-        {
+        for (int i = 0; i < peaOnScreen.size(); i++) {
             peaOnScreen.get(i).render(sb);
         }
         sb.end();
 
-        if(Gdx.input.justTouched()){
+        if (Gdx.input.justTouched()) {
             posx = Gdx.input.getX();
-         posy = Gdx.input.getY();
-         System.out.printf("%d , %d\n" , posx,posy);
-            if(posx >= peaShooter.position.getKey() &&  posx <= peaShooter.position.getKey() - peaShooter.peaShooterGIF.getWidth() && posy >= peaShooter.position.getValue() && posy <= -1*peaShooter.peaShooterGIF.getHeight() + peaShooter.position.getValue())
-            {
+            posy = Gdx.input.getY();
+            System.out.printf("%d , %d\n", posx, posy);
+            if (posx >= peaShooter.position.getKey() && posx <= peaShooter.position.getKey() - peaShooter.peaShooterGIF.getWidth() && posy >= peaShooter.position.getValue() && posy <= -1 * peaShooter.peaShooterGIF.getHeight() + peaShooter.position.getValue()) {
                 System.out.println("yes");
                 selectPeashooter = true;
-            }
-            else if(selectPeashooter)
-            {
+            } else if (selectPeashooter) {
                 selectPeashooter = false;
                 Set<Pair<Integer, Integer>> st = positions.keySet();
-                for (Pair<Integer, Integer> pr : st){
-                    if(positions.get(pr) == true && posx >= pr.getKey() &&  posx <= pr.getKey() + gardenWidth && posy >= pr.getValue() && posy <= gardenHeight + pr.getValue())
-                    {
+                for (Pair<Integer, Integer> pr : st) {
+                    if (positions.get(pr) == true && posx >= pr.getKey() && posx <= pr.getKey() + gardenWidth && posy >= pr.getValue() && posy <= gardenHeight + pr.getValue()) {
                         PeaShooter pea = new PeaShooter(pr.getKey(), pr.getValue());
                         peaOnScreen.add(pea);
                         positions.remove(pr);
@@ -102,13 +110,12 @@ public class PlayState extends States {
             }
         }
 
-        if(selectPeashooter)
-        {
+        if (selectPeashooter) {
             System.out.println("hello");
             shape.begin(ShapeRenderer.ShapeType.Line);
-        shape.rect(peaShooter.position.getKey(), peaShooter.position.getValue(), peaShooter.peaShooterGIF.getWidth(), peaShooter.peaShooterGIF.getHeight());
-        shape.setColor(Color.BLUE);
-        shape.end();
+            shape.rect(peaShooter.position.getKey(), peaShooter.position.getValue(), peaShooter.peaShooterGIF.getWidth(), peaShooter.peaShooterGIF.getHeight());
+            shape.setColor(Color.BLUE);
+            shape.end();
         }
 
 //        shape.begin(ShapeRenderer.ShapeType.Line);
