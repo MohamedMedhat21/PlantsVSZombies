@@ -55,9 +55,13 @@ public class PlayState extends States {
         Score = 50;
         Zombies.arrayOfZombies = new Array<Zombies>();
         Random rand = new Random();
-
-        for (int i = 5; i >= 1; i--)
-            Zombies.arrayOfZombies.add(new StandardZombie(1200, 1000+i*rand.nextInt(200), 150*i-120, 0.2f));
+        for (int i = 0; i < 5; i++) {
+            int last = 1000;
+            for (int j = 0; j < 10 + rand.nextInt(20); j++) {
+                last = last + 200 + rand.nextInt(200);
+                Zombies.arrayOfZombies.add(new StandardZombie(1200, last, Zombies.main5RowPositions[i % 5], 0.2f));
+            }
+        }
 
         for (int w = (int) (firstBottomRectangle.getX()); w < backgroundWidth - 5; w += firstBottomRectangle.width)
             for (int h = (int) (firstBottomRectangle.getY()); h < backgroundHeight; h += firstBottomRectangle.height)

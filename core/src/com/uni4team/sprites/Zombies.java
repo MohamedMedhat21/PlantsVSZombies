@@ -14,6 +14,7 @@ abstract public class Zombies {
     protected Texture zombieTexture;
     protected Animation animation;
     public static Array<Zombies> arrayOfZombies;
+    public static final int main5RowPositions[] = {30, 180, 330, 480, 630};
 
     public Zombies(int hpPoint, int x, int y, float speed) {
         this.hpPoint = hpPoint;
