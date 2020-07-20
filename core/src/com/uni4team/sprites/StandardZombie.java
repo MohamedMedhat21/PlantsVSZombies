@@ -8,7 +8,7 @@ public class StandardZombie extends Zombies {
     public StandardZombie(int hpPoint,int x,int y,float speed) {
         super(hpPoint, x,y,speed);
         zombieTexture=new Texture("standard zombie sprite sheet.png");
-        animation=new Animation(new TextureRegion(zombieTexture),20,8f);
+        animation=new Animation(new TextureRegion(zombieTexture),15,8f);
         arrayOfZombies.add(this);
     }
 

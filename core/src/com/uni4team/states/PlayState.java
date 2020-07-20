@@ -37,7 +37,7 @@ public class PlayState extends States {
         backgroundWidth = bg.getWidth();
         backgroundHeight = bg.getHeight();
         gardenWidth = 81;
-        gardenHeight = 139;
+        gardenHeight = 150;
         selectPeashooter = false;
         selectSunFlower = false;
         peaOnScreen = new ArrayList<>();
