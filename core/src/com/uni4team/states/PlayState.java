@@ -33,7 +33,8 @@ public class PlayState extends States {
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
-        bg = new Texture("backyardResized.jpg");
+        //bg = new Texture("backyardResized.jpg");
+        bg = new Texture("backyardEdited.jpg");
         backgroundWidth = bg.getWidth();
         backgroundHeight = bg.getHeight();
         gardenWidth = 81;
@@ -167,8 +168,8 @@ public class PlayState extends States {
             else {
                 for(int k = 0; k < sunFlowersOnScreen.size(); k++){
                     if(sunFlowersOnScreen.get(k).getHasSun() == true){
-                        if(posx >= sunFlowersOnScreen.get(k).getPosition().getKey() && posx <= sunFlowersOnScreen.get(k).getPosition().getKey() + sunFlowersOnScreen.get(k).getSunFlowerGIF().getWidth() &&
-                        posy >= sunFlowersOnScreen.get(k).getPosition().getValue() && posx <= sunFlowersOnScreen.get(k).getPosition().getValue() + sunFlowersOnScreen.get(k).getSunFlowerGIF().getHeight()){
+                        if(posx >= sunFlowersOnScreen.get(k).getPosition().getKey() &&  posx <= sunFlowersOnScreen.get(k).getPosition().getKey() + 30 &&
+                        posy >= sunFlowersOnScreen.get(k).getPosition().getValue() && posy <= sunFlowersOnScreen.get(k).getPosition().getValue() + 30){
                             Score += 25;
                             sunFlowersOnScreen.get(k).setHasSun(false);
                             sunFlowersOnScreen.get(k).getSun().dispose();
@@ -187,7 +188,7 @@ public class PlayState extends States {
         }
         if(selectSunFlower){
             shape.begin(ShapeRenderer.ShapeType.Line);
-            shape.rect(sunFlower.getPosition().getKey(), sunFlower.getPosition().getValue(), sunFlower.getSunFlowerGIF().getWidth(), sunFlower.getSunFlowerGIF().getHeight());
+            shape.rect(sunFlower.getPosition().getKey(), sunFlower.getPosition().getValue(), sunFlower.getSunFlowerGIF().getWidth() + 1, sunFlower.getSunFlowerGIF().getHeight());
             shape.setColor(Color.BLUE);
             shape.end();
         }
