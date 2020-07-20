@@ -14,7 +14,6 @@ import java.awt.*;
 public class PlantsVSZombiesGame extends ApplicationAdapter {
 	public static final int WIDTH = 1024;
 	public static final int HEIGTH = 768;
-	public static final String TITLE = "Plants VS Zombies";
 	private GameStateManager gsm;
 	private SpriteBatch batch;
 	private Music music;

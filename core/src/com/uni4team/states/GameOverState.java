@@ -11,20 +11,21 @@ import com.badlogic.gdx.graphics.Color;
 import java.awt.*;
 
 
-public class GameOverState extends States{
+public class GameOverState extends States {
     private Label GameOver;
     private Label score;
     private Label scoreINT;
     private Texture bg;
     Stage stage = new Stage();
-    protected GameOverState(GameStateManager gsm){
+
+    public GameOverState(GameStateManager gsm) {
         super(gsm);
         stage = new Stage();
-        bg = new Texture("GameOverBackground.png");
+        bg = new Texture("GameOverBackground2.jpg");
 
-        GameOver = new Label("Game Over", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        GameOver.setPosition(1024/2,768/2);
-        stage.addActor(GameOver);
+        //GameOver = new Label("Game Over", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        //GameOver.setPosition(1024/2,768/2);
+        //stage.addActor(GameOver);
 
         score = new Label("SCORE", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
@@ -42,7 +43,6 @@ public class GameOverState extends States{
 
     @Override
     public void render(SpriteBatch sb) {
-        Gdx.graphics.setWindowedMode(1024, 768);
         sb.begin();
         stage.act(Gdx.graphics.getDeltaTime());
         stage.getBatch().begin();

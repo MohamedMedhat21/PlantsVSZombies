@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.uni4team.PlantsVSZombiesGame;
 import com.uni4team.sprites.PeaShooter;
 import com.uni4team.sprites.StandardZombie;
 import com.uni4team.sprites.Zombies;
@@ -47,8 +48,9 @@ public class PlayState extends States {
         peaShooter = new PeaShooter(2, 250);
         positions = new HashMap<>();
         Zombies.arrayOfZombies = new Array<Zombies>();
-        for (int i = 4; i >= 1; i--) {
-            Zombies.arrayOfZombies.add(new StandardZombie(1200, 700, 100 * i - 300, 1 + i));
+        Random rand=new Random();
+        for (int i = 5; i >= 1; i--) {
+            Zombies.arrayOfZombies.add(new StandardZombie(1200, 1000+i*rand.nextInt(200), 150*i-120, 0.2f));
         }
         for (int w = (int) (rectangle.getX()); w < backgroundWidth - 5; w += rectangle.width) {
             for (int h = (int) (rectangle.getY()); h < backgroundHeight; h += rectangle.height) {
@@ -69,7 +71,7 @@ public class PlayState extends States {
     public void update(float dt) {
         handleInput();
         for (Zombies zombie : Zombies.arrayOfZombies) {
-            zombie.update(dt);
+            zombie.update(dt,gsm);
         }
     }
 
