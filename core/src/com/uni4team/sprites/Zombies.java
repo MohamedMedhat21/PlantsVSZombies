@@ -6,8 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.uni4team.states.GameOverState;
 import com.uni4team.states.GameStateManager;
-import com.uni4team.states.PlayState;
-
 
 abstract public class Zombies {
     protected int hpPoint;

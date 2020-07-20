@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.graphics.Color;
 
-import java.awt.*;
 
 
 public class GameOverState extends States {
@@ -35,6 +34,7 @@ public class GameOverState extends States {
 
     @Override
     protected void handleInput() {
+
     }
 
     @Override
@@ -56,6 +56,5 @@ public class GameOverState extends States {
     public void dispose() {
         bg.dispose();
         stage.dispose();
-        System.out.println("Game Over dispose");
     }
 }

@@ -1,33 +1,33 @@
 package com.uni4team.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
-import com.uni4team.PlantsVSZombiesGame;
-import com.uni4team.sprites.PeaShooter;
-import com.uni4team.sprites.StandardZombie;
-import com.uni4team.sprites.Zombies;
+import com.uni4team.sprites.*;
 import javafx.util.Pair;
 
 import java.util.*;
 
-
 public class PlayState extends States {
     private Texture bg;
-    private int backgroundWidth, backgroundHeight;
-    private int gardenWidth, gardenHeight;
-    private Rectangle rectangle;
+    private Label scoreLbl;
+    private int backgroundWidth, backgroundHeight, gardenWidth, gardenHeight, posx, posy, plantSun, Score;
+    private Rectangle firstBottomRectangle;
     private ShapeRenderer shape;
     private PeaShooter peaShooter;
+    private sunFlower sunFlower;
     private Map<Pair<Integer, Integer>, Boolean> positions;
-    private int posx, posy;
-    private boolean selectPeashooter;
+    private boolean selectPeashooter, selectSunFlower;
     private List<PeaShooter> peaOnScreen;
+    private List<sunFlower> sunFlowersOnScreen;
+    private List<singlePea> singlePeas;
     //------------------------------------------------------
     private StandardZombie standardZombie;
 
@@ -39,111 +39,161 @@ public class PlayState extends States {
         gardenWidth = 81;
         gardenHeight = 139;
         selectPeashooter = false;
+        selectSunFlower = false;
         peaOnScreen = new ArrayList<>();
-        rectangle = new Rectangle();
+        sunFlowersOnScreen = new ArrayList<>();
+        firstBottomRectangle = new Rectangle();
         shape = new ShapeRenderer();
-        rectangle.setHeight(gardenHeight);
-        rectangle.setWidth(gardenWidth);
-        rectangle.setPosition(250, 35);
+        firstBottomRectangle.setHeight(gardenHeight);
+        firstBottomRectangle.setWidth(gardenWidth);
+        firstBottomRectangle.setPosition(250, 35);
         peaShooter = new PeaShooter(2, 250);
+        sunFlower = new sunFlower(2, 400);
         positions = new HashMap<>();
+        singlePeas = new ArrayList<singlePea>();
+        plantSun = 0;
+        Score = 50;
         Zombies.arrayOfZombies = new Array<Zombies>();
-        Random rand=new Random();
-        for (int i = 5; i >= 1; i--) {
+        Random rand = new Random();
+
+        for (int i = 5; i >= 1; i--)
             Zombies.arrayOfZombies.add(new StandardZombie(1200, 1000+i*rand.nextInt(200), 150*i-120, 0.2f));
-        }
-        for (int w = (int) (rectangle.getX()); w < backgroundWidth - 5; w += rectangle.width) {
-            for (int h = (int) (rectangle.getY()); h < backgroundHeight; h += rectangle.height) {
+
+        for (int w = (int) (firstBottomRectangle.getX()); w < backgroundWidth - 5; w += firstBottomRectangle.width)
+            for (int h = (int) (firstBottomRectangle.getY()); h < backgroundHeight; h += firstBottomRectangle.height)
                 positions.put(new Pair(w, h), true);
-            }
-        }
-
     }
-
 
     @Override
-    public void handleInput() {
-
+    protected void handleInput() {
     }
 
-    //TODO: check if zombie entered the house, call GameOverState
     @Override
     public void update(float dt) {
-        handleInput();
-        for (Zombies zombie : Zombies.arrayOfZombies) {
-            zombie.update(dt,gsm);
-        }
+        for (Zombies zombie : Zombies.arrayOfZombies)
+            zombie.update(dt, gsm);
+
+        for (singlePea pea : singlePeas)
+            pea.update(dt, gsm);
     }
 
     @Override
     public void render(SpriteBatch sb) {
+        plantSun++;
 
         sb.begin();
         sb.draw(bg, 0, 0);
-        for (Zombies zombie : Zombies.arrayOfZombies) {
-            sb.draw(zombie.getZombieTexture(), zombie.getPostion().x, zombie.getPostion().y);
-        }
-        peaShooter.render(sb);
 
-        for (int i = 0; i < peaOnScreen.size(); i++) {
+        for (Zombies zombie : Zombies.arrayOfZombies)
+            sb.draw(zombie.getZombieTexture(), zombie.getPostion().x, zombie.getPostion().y);
+
+        peaShooter.render(sb);
+        sunFlower.render(sb);
+
+        for (int i = 0; i < peaOnScreen.size(); i++)
             peaOnScreen.get(i).render(sb);
+
+        for(int i = 0; i < sunFlowersOnScreen.size(); i++){
+            sunFlowersOnScreen.get(i).render(sb);
+            if(sunFlowersOnScreen.get(i).getHasSun() == true)
+                sunFlowersOnScreen.get(i).getSun().render(sb, sunFlowersOnScreen.get(i).getPosition().getKey(), sunFlowersOnScreen.get(i).getPosition().getValue());
+            else if(plantSun % 500 == 0){
+                sunFlowersOnScreen.get(i).setSun(new Sun(sunFlowersOnScreen.get(i).getPosition().getKey(), sunFlowersOnScreen.get(i).getPosition().getValue()));
+                sunFlowersOnScreen.get(i).setHasSun(true);
+            }
         }
+
+        for (int i = 0 ; i < singlePeas.size() ; i++)
+            sb.draw(singlePeas.get(i).getTexture(),singlePeas.get(i).getPostion().getKey(), singlePeas.get(i).getPostion().getValue());
+
         sb.end();
+
+        SpriteBatch spriteBatch;
+        BitmapFont font;
+        CharSequence str = String.valueOf(Score);
+        spriteBatch = new SpriteBatch();
+        font = new BitmapFont();
+        spriteBatch.begin();
+        font.setColor(Color.BROWN);
+        font.getData().setScale(2, 2);
+        font.draw(spriteBatch, str, 28, 113);
+        spriteBatch.end();
+
 
         if (Gdx.input.justTouched()) {
             posx = Gdx.input.getX();
-            posy = Gdx.input.getY();
-            System.out.printf("%d , %d\n", posx, posy);
-            if (posx >= peaShooter.position.getKey() && posx <= peaShooter.position.getKey() - peaShooter.peaShooterGIF.getWidth() && posy >= peaShooter.position.getValue() && posy <= -1 * peaShooter.peaShooterGIF.getHeight() + peaShooter.position.getValue()) {
-                System.out.println("yes");
+            posy = Gdx.graphics.getHeight() - Gdx.input.getY();
+            if (Score >= peaShooter.getCostOfPeaShooter() && posx >= peaShooter.getPosition().getKey() && posx <= peaShooter.getPosition().getKey() + peaShooter.getPeaShooterGIF().getWidth() && posy >= peaShooter.getPosition().getValue() && posy <= peaShooter.getPeaShooterGIF().getHeight() + peaShooter.getPosition().getValue()) {
+                selectSunFlower = false;
                 selectPeashooter = true;
-            } else if (selectPeashooter) {
+            }
+            else if (selectPeashooter) {
                 selectPeashooter = false;
                 Set<Pair<Integer, Integer>> st = positions.keySet();
                 for (Pair<Integer, Integer> pr : st) {
                     if (positions.get(pr) == true && posx >= pr.getKey() && posx <= pr.getKey() + gardenWidth && posy >= pr.getValue() && posy <= gardenHeight + pr.getValue()) {
+                        Score -= peaShooter.getCostOfPeaShooter();
                         PeaShooter pea = new PeaShooter(pr.getKey(), pr.getValue());
                         peaOnScreen.add(pea);
+                        singlePeas.add(new singlePea(pea.getPosition().getKey() + ((pea.getPeaShooterGIF().getWidth() + 20)/2), pea.getPosition().getValue() + ((pea.getPeaShooterGIF().getHeight() + 20)/2),4f, pea));
                         positions.remove(pr);
                         positions.put(pr, false);
                         break;
                     }
                 }
             }
+            else if (Score >= sunFlower.getCostOfSunFlower() && posx >= sunFlower.getPosition().getKey() && posx <= sunFlower.getPosition().getKey() + sunFlower.getSunFlowerGIF().getWidth() && posy >= sunFlower.getPosition().getValue() && posy <= sunFlower.getSunFlowerGIF().getHeight() + sunFlower.getPosition().getValue()) {
+                selectPeashooter = false;
+                selectSunFlower = true;
+            }
+            else if (selectSunFlower) {
+                selectSunFlower = false;
+                Set<Pair<Integer, Integer>> st = positions.keySet();
+                for (Pair<Integer, Integer> pr : st) {
+                    if (positions.get(pr) == true && posx >= pr.getKey() && posx <= pr.getKey() + gardenWidth && posy >= pr.getValue() && posy <= gardenHeight + pr.getValue()) {
+                        Score -= sunFlower.getCostOfSunFlower();
+                        sunFlower sunflowerTemp = new sunFlower(pr.getKey(), pr.getValue());
+                        sunFlowersOnScreen.add(sunflowerTemp);
+                        positions.remove(pr);
+                        positions.put(pr, false);
+                        break;
+                    }
+                }
+            }
+            else {
+                for(int k = 0; k < sunFlowersOnScreen.size(); k++){
+                    if(sunFlowersOnScreen.get(k).getHasSun() == true){
+                        if(posx >= sunFlowersOnScreen.get(k).getPosition().getKey() && posx <= sunFlowersOnScreen.get(k).getPosition().getKey() + sunFlowersOnScreen.get(k).getSunFlowerGIF().getWidth() &&
+                        posy >= sunFlowersOnScreen.get(k).getPosition().getValue() && posx <= sunFlowersOnScreen.get(k).getPosition().getValue() + sunFlowersOnScreen.get(k).getSunFlowerGIF().getHeight()){
+                            Score += 25;
+                            sunFlowersOnScreen.get(k).setHasSun(false);
+                            sunFlowersOnScreen.get(k).getSun().dispose();
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         if (selectPeashooter) {
-            System.out.println("hello");
             shape.begin(ShapeRenderer.ShapeType.Line);
-            shape.rect(peaShooter.position.getKey(), peaShooter.position.getValue(), peaShooter.peaShooterGIF.getWidth(), peaShooter.peaShooterGIF.getHeight());
+            shape.rect(peaShooter.getPosition().getKey(), peaShooter.getPosition().getValue(), peaShooter.getPeaShooterGIF().getWidth(),peaShooter.getPeaShooterGIF().getHeight());
             shape.setColor(Color.BLUE);
             shape.end();
         }
-
-//        shape.begin(ShapeRenderer.ShapeType.Line);
-//        shape.rect(rectangle.getX(), rectangle.getY(), rectangle.width, rectangle.height);
-//        shape.setColor(Color.PURPLE);
-//        shape.end();
-
+        if(selectSunFlower){
+            shape.begin(ShapeRenderer.ShapeType.Line);
+            shape.rect(sunFlower.getPosition().getKey(), sunFlower.getPosition().getValue(), sunFlower.getSunFlowerGIF().getWidth(), sunFlower.getSunFlowerGIF().getHeight());
+            shape.setColor(Color.BLUE);
+            shape.end();
+        }
     }
 
     @Override
     public void dispose() {
         shape.dispose();
         peaShooter.dispose();
+        sunFlower.dispose();
         bg.dispose();
-        System.out.println("Play state dispose");
     }
-
-//    private void updateGround() {
-//    }
-//    int posX, posY;
-//    @Override
-//    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-//        //posX = screenX - backgroundWidth/2;
-//        //posY = Gdx.graphics.getHeight() - screenY - backgroundHeight/2;
-//        posX = Gdx.graphics.getWidth()/2 - backgroundWidth/2;
-//        posY = Gdx.graphics.getHeight()/2 - backgroundHeight/2;
-//        return false;
-//    }
 }
