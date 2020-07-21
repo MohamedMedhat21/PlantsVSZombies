@@ -23,5 +23,6 @@ public class StandardZombie extends Zombies {
     @Override
     public void dispose() {
         zombieTexture.dispose();
+        zombieHead.dispose();
     }
 }

@@ -7,6 +7,7 @@ public class Animation {
     Array<TextureRegion> frames;
     float maxFrameTime;
     float currentFrameTime;
+    boolean taken=false;
     int frameCount;
     int frame;
 
@@ -29,8 +30,14 @@ public class Animation {
             frame++;
             currentFrameTime = 0;
         }
-        if (frame >= frameCount)
+        if (frame >= frameCount) {
             frame = 0;
+            taken=true;
+        }
+    }
+
+    public boolean isTaken() {
+        return taken;
     }
 
     public TextureRegion getFrame() {

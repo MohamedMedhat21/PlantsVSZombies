@@ -79,6 +79,7 @@ public class PlayState extends States {
     public void update(float dt) {
         for (Zombies zombie : Zombies.arrayOfZombies) {
             for (singlePea pea : singlePeas) {
+                if(zombie.getSpeed()==0)continue;
                if(zombie.getPosition().y + 64 == pea.getPosition().getValue() &&
                        zombie.getPosition().x + 10 < pea.getPosition().getKey() && pea.getPosition().getKey() < zombie.getPosition().x + 15){
 
@@ -107,7 +108,7 @@ public class PlayState extends States {
                         zombie.getPosition().x + 20 < flower.getPosition().getKey() && flower.getPosition().getKey() < zombie.getPosition().x + 30){
 
                     zombie.setSpeed(0);
-                    zombie.convert();
+                    //zombie.convert();
                 }
             }
             for (PeaShooter shooter : peaOnScreen) {
@@ -115,7 +116,7 @@ public class PlayState extends States {
                         zombie.getPosition().x + 20 < shooter.getPosition().getKey() && shooter.getPosition().getKey() < zombie.getPosition().x + 30){
 
                     zombie.setSpeed(0);
-                    zombie.convert();
+                    //zombie.convert();
                 }
             }
         }
@@ -125,22 +126,25 @@ public class PlayState extends States {
 
         for (singlePea pea : singlePeas)
             pea.update(dt, gsm);
+        for(Zombies zombie : Zombies.arrayOfZombies) {
+            if (zombie.getHpPoint()<=0 && zombie.getZombieHeadAnimation().isTaken()) {
+                    zombie.setPosition(2000+rand.nextInt(5000),(int)zombie.getPosition().y);
+            }
+        }
     }
 
     @Override
     public void render(SpriteBatch sb) {
         plantSun++;
-
         sb.begin();
         sb.draw(bg, 0, 0);
 
         for (Zombies zombie : Zombies.arrayOfZombies) {
-            if(zombie.getSpeed()==0){
-                sb.draw(zombie.getZombieHeadTexture(),zombie.getPosition().x,zombie.getPosition().y);
-            }
             sb.draw(zombie.getZombieTexture(), zombie.getPosition().x, zombie.getPosition().y);
+            if (zombie.getHpPoint() <= 0) {
+                sb.draw(zombie.getZombieHeadTexture(), zombie.getPosition().x, zombie.getPosition().y);
+            }
         }
-
         peaShooter.render(sb);
         sunFlower.render(sb);
 

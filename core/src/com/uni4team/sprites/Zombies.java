@@ -10,6 +10,7 @@ import com.uni4team.states.GameStateManager;
 abstract public class Zombies {
     protected int hpPoint;
     protected float speed;
+    boolean finished=false;
     protected Vector2 position;
     protected Texture zombieTexture;
     protected Texture zombieHead;
@@ -53,6 +54,14 @@ abstract public class Zombies {
         this.hpPoint = hpPoint;
     }
 
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
     public boolean hit(int hp) {
         hpPoint -= hp;
         return (hpPoint > 0 ? false : true);
@@ -67,7 +76,7 @@ abstract public class Zombies {
 
     public void update(float dt, GameStateManager gsm) {
         animation.update(dt);
-       if(this.speed==0){
+       if(this.hpPoint==0){
            zombieHeadAnimation.update(dt);
        }
         if (position.x > 150)
@@ -75,6 +84,11 @@ abstract public class Zombies {
         else
             gsm.set(new GameOverState(gsm));
     }
+
+    public Animation getZombieHeadAnimation() {
+        return zombieHeadAnimation;
+    }
+
     abstract public void convert();
     abstract public void dispose();
 }
