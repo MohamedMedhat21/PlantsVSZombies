@@ -14,13 +14,14 @@ public class sunFlower extends plant{
         sunFlowerGIF = new Texture("SunFlower1Resized.gif");
         position = new Pair(x, y);
         costOfSunFlower = 50;
+        this.setHpPoints(1000);
         hasSun = false;
     }
 
-    public void setPosition(Pair<Integer, Integer> position) {
-        this.position = position;
-    }
+    public void setPosition(int x, int y) {
+        this.position=new Pair<>(x,y);
 
+    }
     public int getCostOfSunFlower(){
         return costOfSunFlower;
     }

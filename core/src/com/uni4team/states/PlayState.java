@@ -32,11 +32,11 @@ public class PlayState extends States {
     //------------------------------------------------------
     private StandardZombie standardZombie;
     private Array<Lawnmowers> lawnmowers;
+
     Random rand = new Random();
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
-        //bg = new Texture("backyardResized.jpg");
         bg = new Texture("backyardEdited.jpg");
         backgroundWidth = bg.getWidth();
         backgroundHeight = bg.getHeight();
@@ -86,15 +86,15 @@ public class PlayState extends States {
         // collision of zombies with peas
         for (Zombies zombie : Zombies.arrayOfZombies) {
             for (singlePea pea : singlePeas) {
-                if(zombie.getSpeed()==0)continue;
+                if(zombie.getZombieState()==3)continue;
                if(zombie.getPosition().y + 64 == pea.getPosition().getValue() &&
-                       zombie.getPosition().x + 10 < pea.getPosition().getKey() && pea.getPosition().getKey() < zombie.getPosition().x + 15){
+                       zombie.getPosition().x + 25 < pea.getPosition().getKey() && pea.getPosition().getKey() < zombie.getPosition().x + 30){
 
                    boolean isDead=zombie.hit(singlePea.getHitCost());
                    pea.setPosition(pea.getPosition().getKey(),5000);
                    if(isDead) {
                        zombie.setSpeed(0);
-                       zombie.convert();
+                       zombie.setZombieState(3);
                        Zombies.deadCnt++;
 
                        // when zombie dies decrease the distance between zombies
@@ -112,20 +112,34 @@ public class PlayState extends States {
         for (Zombies zombie : Zombies.arrayOfZombies) {
             // collision of zombies with sun flower
             for (sunFlower flower : sunFlowersOnScreen) {
-                if(zombie.getPosition().y + 5 == flower.getPosition().getValue() &&
-                        zombie.getPosition().x + 20 < flower.getPosition().getKey() && flower.getPosition().getKey() < zombie.getPosition().x + 30){
+                if(zombie.getZombieState()!=3&&zombie.getPosition().y + 5 == flower.getPosition().getValue() &&
+                        zombie.getPosition().x + 10 < flower.getPosition().getKey() && flower.getPosition().getKey() < zombie.getPosition().x + 20){
 
                     zombie.setSpeed(0);
-                    //zombie.convert();
+                    if(zombie.getZombieState()!=2)zombie.setZombieState(2);
+                    boolean isDead=flower.hit(zombie.getHitCost());
+                    if(isDead){
+                        flower.setPosition(5000,5000);
+                        flower.dispose();
+                        zombie.setZombieState(1);
+                        zombie.setSpeed(0.2f);
+                    }
                 }
             }
             // collision of zombies with pea shooter
             for (PeaShooter shooter : peaOnScreen) {
-                if(zombie.getPosition().y + 5 == shooter.getPosition().getValue() &&
-                        zombie.getPosition().x + 20 < shooter.getPosition().getKey() && shooter.getPosition().getKey() < zombie.getPosition().x + 30){
+                if(zombie.getZombieState()!=3&&zombie.getPosition().y + 5 == shooter.getPosition().getValue() &&
+                        zombie.getPosition().x + 10 < shooter.getPosition().getKey() && shooter.getPosition().getKey() < zombie.getPosition().x + 20){
 
                     zombie.setSpeed(0);
-                    //zombie.convert();
+                    if(zombie.getZombieState()!=2)zombie.setZombieState(2);
+                    boolean isDead=shooter.hit(zombie.getHitCost());
+                    if(isDead){
+                        shooter.setPosition(5000,5000);
+                        shooter.dispose();
+                        zombie.setZombieState(1);
+                        zombie.setSpeed(0.2f);
+                    }
                 }
             }
         }
@@ -144,7 +158,10 @@ public class PlayState extends States {
         for (singlePea pea : singlePeas)
             pea.update(dt, gsm);
         for(Zombies zombie : Zombies.arrayOfZombies) {
-            if (zombie.getHpPoint()<=0 && zombie.getZombieHeadAnimation().isTaken()) {
+            if (zombie.getZombieState()==3 && zombie.getZombieHeadAnimation().isTaken()) {
+                    zombie.setZombieState(1);
+                    zombie.setHpPoint(1200);
+                    zombie.setSpeed(0.2f);
                     zombie.setPosition(2000+rand.nextInt(5000),(int)zombie.getPosition().y);
             }
         }
@@ -156,12 +173,6 @@ public class PlayState extends States {
         sb.begin();
         sb.draw(bg, 0, 0);
 
-        for (Zombies zombie : Zombies.arrayOfZombies) {
-            sb.draw(zombie.getZombieTexture(), zombie.getPosition().x, zombie.getPosition().y);
-            if (zombie.getHpPoint() <= 0) {
-                sb.draw(zombie.getZombieHeadTexture(), zombie.getPosition().x, zombie.getPosition().y);
-            }
-        }
         peaShooter.render(sb);
         sunFlower.render(sb);
 
@@ -184,8 +195,9 @@ public class PlayState extends States {
 
         for (int i = 0 ; i < singlePeas.size() ; i++)
             sb.draw(singlePeas.get(i).getTexture(),singlePeas.get(i).getPosition().getKey(), singlePeas.get(i).getPosition().getValue());
-
-
+        for (Zombies zombie : Zombies.arrayOfZombies) {
+            zombie.render(sb);
+        }
         sb.end();
 
         SpriteBatch spriteBatch;

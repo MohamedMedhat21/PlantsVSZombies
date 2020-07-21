@@ -10,7 +10,7 @@ public class Lawnmowers {
     int velocity;
     public Lawnmowers(int x, int y) {
         position = new Vector2(x, y);
-        lawnmowerGIF = new Texture("PeaShooter2.gif");
+        lawnmowerGIF = new Texture("lawnmower.png");
         velocity = 0;
     }
     public Texture getLawnmowerGIF() {

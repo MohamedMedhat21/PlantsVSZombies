@@ -13,6 +13,7 @@ public class PeaShooter extends plant {
         peaShooterGIF = new Texture("PeaShooter2.gif");
         position = new Pair(x, y);
         costOfPeaShooter = 25;
+        this.setHpPoints(1000);
     }
 
     public Texture getPeaShooterGIF() {
@@ -27,8 +28,9 @@ public class PeaShooter extends plant {
         return position;
     }
 
-    public void setPosition(Pair<Integer, Integer> position) {
-        this.position = position;
+    public void setPosition(int x, int y) {
+        this.position=new Pair<>(x,y);
+
     }
 
     public int getCostOfPeaShooter() {

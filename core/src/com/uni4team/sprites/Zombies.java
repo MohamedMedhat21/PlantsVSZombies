@@ -1,6 +1,7 @@
 package com.uni4team.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -10,14 +11,16 @@ import com.uni4team.states.GameStateManager;
 abstract public class Zombies {
     protected int hpPoint;
     protected float speed;
+    protected int zombieState=1;
     boolean finished=false;
     protected Vector2 position;
-    protected Texture zombieTexture;
+    protected Texture zombieTexture,attackZombieTexture;
     protected Texture zombieHead;
-    protected Animation animation,zombieHeadAnimation;
+    protected Animation animation,zombieHeadAnimation,attackZombie;
     public static Array<Zombies> arrayOfZombies;
     public static int distanceBetweenZombies = 500, deadCnt = 0;
     public static final int main5RowPositions[] = {30, 180, 330, 480, 630};
+    public static final int hitCost=1;
 
     public void setZombieHead(Texture zombieHead) {
         this.zombieHead = zombieHead;
@@ -50,6 +53,15 @@ abstract public class Zombies {
         return position;
     }
 
+    public int getZombieState() {
+        return zombieState;
+    }
+
+    public void setZombieState(int zombieState) {
+        this.zombieState = zombieState;
+        convert();
+    }
+
     public void setHpPoint(int hpPoint) {
         this.hpPoint = hpPoint;
     }
@@ -67,6 +79,10 @@ abstract public class Zombies {
         return (hpPoint > 0 ? false : true);
     }
 
+    public static int getHitCost() {
+        return hitCost;
+    }
+
     public TextureRegion getZombieTexture() {
         return animation.getFrame();
     }
@@ -76,7 +92,7 @@ abstract public class Zombies {
 
     public void update(float dt, GameStateManager gsm) {
         animation.update(dt);
-       if(this.hpPoint==0){
+       if(this.zombieState==3){
            zombieHeadAnimation.update(dt);
        }
         if (position.x > 150)
@@ -88,7 +104,12 @@ abstract public class Zombies {
     public Animation getZombieHeadAnimation() {
         return zombieHeadAnimation;
     }
-
+    public void render(SpriteBatch sb){
+        if(this.zombieState==3){
+            sb.draw(zombieHeadAnimation.getFrame(),position.x,position.y);
+        }
+            sb.draw(animation.getFrame(),position.x,position.y);
+    }
     abstract public void convert();
     abstract public void dispose();
 }
