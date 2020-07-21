@@ -10,6 +10,10 @@ public class singlePea {
     private Pair<Integer, Integer> position;
     private Texture peaTexture;
     private PeaShooter peaShooterOfPea;
+    private static final int hitCost=600;
+    public static int getHitCost() {
+        return hitCost;
+    }
 
     public singlePea(int x, int y, float speed, PeaShooter shooter) {
         peaTexture = new Texture("SinglePea.png");
@@ -21,6 +25,10 @@ public class singlePea {
     public Texture getTexture()
     {
         return peaTexture;
+    }
+
+    public void setPosition(int x,int y) {
+        this.position = new Pair(x, y);
     }
 
     public Pair<Integer, Integer> getPostion() {

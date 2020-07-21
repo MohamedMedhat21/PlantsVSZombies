@@ -58,7 +58,7 @@ public class PlayState extends States {
         Random rand = new Random();
         for (int i = 0; i < 5; i++) {
             int last = 1000;
-            for (int j = 0; j < 10 + rand.nextInt(20); j++) {
+            for (int j = 0; j < 1; j++) {
                 last = last + 200 + rand.nextInt(200);
                 Zombies.arrayOfZombies.add(new StandardZombie(1200, last, Zombies.main5RowPositions[i % 5], 0.2f));
             }
@@ -75,6 +75,18 @@ public class PlayState extends States {
 
     @Override
     public void update(float dt) {
+        for (Zombies zombie : Zombies.arrayOfZombies){
+            for (singlePea pea : singlePeas){
+               if(zombie.getPostion().y+64==pea.getPostion().getValue()&&(zombie.getPostion().x+5<pea.getPostion().getKey())&&(zombie.getPostion().x+10>pea.getPostion().getKey())){
+                     boolean isDead=zombie.hit(singlePea.getHitCost());
+                     pea.setPosition(pea.getPostion().getKey(),5000);
+                    if(isDead){
+                        zombie.setSpeed(0);
+                        zombie.convert();
+                    }
+                }
+            }
+        }
         for (Zombies zombie : Zombies.arrayOfZombies)
             zombie.update(dt, gsm);
 
@@ -89,8 +101,12 @@ public class PlayState extends States {
         sb.begin();
         sb.draw(bg, 0, 0);
 
-        for (Zombies zombie : Zombies.arrayOfZombies)
+        for (Zombies zombie : Zombies.arrayOfZombies) {
+            if(zombie.getSpeed()==0){
+                sb.draw(zombie.getZombieHeadTexture(),zombie.getPostion().x,zombie.getPostion().y);
+            }
             sb.draw(zombie.getZombieTexture(), zombie.getPostion().x, zombie.getPostion().y);
+        }
 
         peaShooter.render(sb);
         sunFlower.render(sb);
@@ -110,6 +126,7 @@ public class PlayState extends States {
 
         for (int i = 0 ; i < singlePeas.size() ; i++)
             sb.draw(singlePeas.get(i).getTexture(),singlePeas.get(i).getPostion().getKey(), singlePeas.get(i).getPostion().getValue());
+
 
         sb.end();
 
