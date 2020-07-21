@@ -68,7 +68,10 @@ public class PlayState extends States {
             int last = 600;
             for (int j = 0; j < 10 + rand.nextInt(10); j++) {
                 last = last + Zombies.distanceBetweenZombies + rand.nextInt(200);
+                int choosen=rand.nextInt(2);
+                if(choosen==0)
                 Zombies.arrayOfZombies.add(new StandardZombie(1200, last, Zombies.main5RowPositions[i], 0.2f));
+                else Zombies.arrayOfZombies.add(new bucketHeadZombie(1200, last, Zombies.main5RowPositions[i], 0.2f));
             }
         }
 
