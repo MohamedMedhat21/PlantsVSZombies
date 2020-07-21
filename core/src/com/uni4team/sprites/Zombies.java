@@ -15,6 +15,7 @@ abstract public class Zombies {
     protected Texture zombieHead;
     protected Animation animation,zombieHeadAnimation;
     public static Array<Zombies> arrayOfZombies;
+    public static int distanceBetweenZombies = 500, deadCnt = 0;
     public static final int main5RowPositions[] = {30, 180, 330, 480, 630};
 
     public void setZombieHead(Texture zombieHead) {
@@ -44,7 +45,7 @@ abstract public class Zombies {
         return hpPoint;
     }
 
-    public Vector2 getPostion() {
+    public Vector2 getPosition() {
         return position;
     }
 

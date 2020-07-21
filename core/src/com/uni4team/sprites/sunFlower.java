@@ -17,6 +17,10 @@ public class sunFlower extends plant{
         hasSun = false;
     }
 
+    public void setPosition(Pair<Integer, Integer> position) {
+        this.position = position;
+    }
+
     public int getCostOfSunFlower(){
         return costOfSunFlower;
     }

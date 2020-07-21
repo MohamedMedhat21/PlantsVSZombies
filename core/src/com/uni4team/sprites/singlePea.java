@@ -31,7 +31,7 @@ public class singlePea {
         this.position = new Pair(x, y);
     }
 
-    public Pair<Integer, Integer> getPostion() {
+    public Pair<Integer, Integer> getPosition() {
         return position;
     }
 

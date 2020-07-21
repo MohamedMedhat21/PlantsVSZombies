@@ -15,6 +15,7 @@ import javafx.util.Pair;
 
 import java.util.*;
 
+
 public class PlayState extends States {
     private Texture bg;
     private Label scoreLbl;
@@ -30,6 +31,7 @@ public class PlayState extends States {
     private List<singlePea> singlePeas;
     //------------------------------------------------------
     private StandardZombie standardZombie;
+    Random rand = new Random();
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -55,12 +57,12 @@ public class PlayState extends States {
         plantSun = 0;
         Score = 50;
         Zombies.arrayOfZombies = new Array<Zombies>();
-        Random rand = new Random();
+
         for (int i = 0; i < 5; i++) {
-            int last = 1000;
-            for (int j = 0; j < 1; j++) {
-                last = last + 200 + rand.nextInt(200);
-                Zombies.arrayOfZombies.add(new StandardZombie(1200, last, Zombies.main5RowPositions[i % 5], 0.2f));
+            int last = 600;
+            for (int j = 0; j < 10 + rand.nextInt(10); j++) {
+                last = last + Zombies.distanceBetweenZombies + rand.nextInt(200);
+                Zombies.arrayOfZombies.add(new StandardZombie(1200, last, Zombies.main5RowPositions[i], 0.2f));
             }
         }
 
@@ -75,18 +77,49 @@ public class PlayState extends States {
 
     @Override
     public void update(float dt) {
-        for (Zombies zombie : Zombies.arrayOfZombies){
-            for (singlePea pea : singlePeas){
-               if(zombie.getPostion().y+64==pea.getPostion().getValue()&&(zombie.getPostion().x+5<pea.getPostion().getKey())&&(zombie.getPostion().x+10>pea.getPostion().getKey())){
-                     boolean isDead=zombie.hit(singlePea.getHitCost());
-                     pea.setPosition(pea.getPostion().getKey(),5000);
-                    if(isDead){
-                        zombie.setSpeed(0);
-                        zombie.convert();
-                    }
+        for (Zombies zombie : Zombies.arrayOfZombies) {
+            for (singlePea pea : singlePeas) {
+               if(zombie.getPosition().y + 64 == pea.getPosition().getValue() &&
+                       zombie.getPosition().x + 10 < pea.getPosition().getKey() && pea.getPosition().getKey() < zombie.getPosition().x + 15){
+
+                   boolean isDead=zombie.hit(singlePea.getHitCost());
+                   pea.setPosition(pea.getPosition().getKey(),5000);
+                   if(isDead) {
+                       zombie.setSpeed(0);
+                       zombie.convert();
+                       Zombies.deadCnt++;
+
+                       // when zombie dies decrease the distance between zombies
+                       // and adding another one int the end if the size of the array mod 5 == 0
+                       Zombies.distanceBetweenZombies -= 50;
+                       if (Zombies.distanceBetweenZombies < 10) Zombies.distanceBetweenZombies = 10;
+                       if (Zombies.deadCnt % 5 == 0) {
+                           Zombies.arrayOfZombies.add(new StandardZombie(1200, 2000 + rand.nextInt(5000), Zombies.main5RowPositions[rand.nextInt(5)], 0.2f));
+                       }
+                       // the only thing left is respawn the died zombie on a different coordinate
+                   }
                 }
             }
         }
+        for (Zombies zombie : Zombies.arrayOfZombies) {
+            for (sunFlower flower : sunFlowersOnScreen) {
+                if(zombie.getPosition().y + 5 == flower.getPosition().getValue() &&
+                        zombie.getPosition().x + 20 < flower.getPosition().getKey() && flower.getPosition().getKey() < zombie.getPosition().x + 30){
+
+                    zombie.setSpeed(0);
+                    zombie.convert();
+                }
+            }
+            for (PeaShooter shooter : peaOnScreen) {
+                if(zombie.getPosition().y + 5 == shooter.getPosition().getValue() &&
+                        zombie.getPosition().x + 20 < shooter.getPosition().getKey() && shooter.getPosition().getKey() < zombie.getPosition().x + 30){
+
+                    zombie.setSpeed(0);
+                    zombie.convert();
+                }
+            }
+        }
+
         for (Zombies zombie : Zombies.arrayOfZombies)
             zombie.update(dt, gsm);
 
@@ -103,9 +136,9 @@ public class PlayState extends States {
 
         for (Zombies zombie : Zombies.arrayOfZombies) {
             if(zombie.getSpeed()==0){
-                sb.draw(zombie.getZombieHeadTexture(),zombie.getPostion().x,zombie.getPostion().y);
+                sb.draw(zombie.getZombieHeadTexture(),zombie.getPosition().x,zombie.getPosition().y);
             }
-            sb.draw(zombie.getZombieTexture(), zombie.getPostion().x, zombie.getPostion().y);
+            sb.draw(zombie.getZombieTexture(), zombie.getPosition().x, zombie.getPosition().y);
         }
 
         peaShooter.render(sb);
@@ -125,7 +158,7 @@ public class PlayState extends States {
         }
 
         for (int i = 0 ; i < singlePeas.size() ; i++)
-            sb.draw(singlePeas.get(i).getTexture(),singlePeas.get(i).getPostion().getKey(), singlePeas.get(i).getPostion().getValue());
+            sb.draw(singlePeas.get(i).getTexture(),singlePeas.get(i).getPosition().getKey(), singlePeas.get(i).getPosition().getValue());
 
 
         sb.end();
