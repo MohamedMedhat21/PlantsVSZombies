@@ -31,6 +31,7 @@ public class PlayState extends States {
     private List<singlePea> singlePeas;
     //------------------------------------------------------
     private StandardZombie standardZombie;
+    private Array<Lawnmowers> lawnmowers;
     Random rand = new Random();
 
     public PlayState(GameStateManager gsm) {
@@ -57,6 +58,11 @@ public class PlayState extends States {
         plantSun = 0;
         Score = 50;
         Zombies.arrayOfZombies = new Array<Zombies>();
+        lawnmowers = new Array<Lawnmowers>();
+
+        for (int i = 0; i < 5; i++) {
+            lawnmowers.add(new Lawnmowers(170, Zombies.main5RowPositions[i]));
+        }
 
         for (int i = 0; i < 5; i++) {
             int last = 600;
@@ -77,6 +83,7 @@ public class PlayState extends States {
 
     @Override
     public void update(float dt) {
+        // collision of zombies with peas
         for (Zombies zombie : Zombies.arrayOfZombies) {
             for (singlePea pea : singlePeas) {
                 if(zombie.getSpeed()==0)continue;
@@ -103,6 +110,7 @@ public class PlayState extends States {
             }
         }
         for (Zombies zombie : Zombies.arrayOfZombies) {
+            // collision of zombies with sun flower
             for (sunFlower flower : sunFlowersOnScreen) {
                 if(zombie.getPosition().y + 5 == flower.getPosition().getValue() &&
                         zombie.getPosition().x + 20 < flower.getPosition().getKey() && flower.getPosition().getKey() < zombie.getPosition().x + 30){
@@ -111,6 +119,7 @@ public class PlayState extends States {
                     //zombie.convert();
                 }
             }
+            // collision of zombies with pea shooter
             for (PeaShooter shooter : peaOnScreen) {
                 if(zombie.getPosition().y + 5 == shooter.getPosition().getValue() &&
                         zombie.getPosition().x + 20 < shooter.getPosition().getKey() && shooter.getPosition().getKey() < zombie.getPosition().x + 30){
@@ -120,7 +129,15 @@ public class PlayState extends States {
                 }
             }
         }
-
+        // collision of zombie with lawnmowers
+        for (Lawnmowers lawnmower : lawnmowers) {
+            for (Zombies zombie : Zombies.arrayOfZombies) {
+                if (lawnmower.getPosition().y == zombie.getPosition().y &&
+                        lawnmower.getPosition().x < zombie.getPosition().x && zombie.getPosition().x < lawnmower.getPosition().x + 10) {
+                    //zombie.dispose();
+                }
+            }
+        }
         for (Zombies zombie : Zombies.arrayOfZombies)
             zombie.update(dt, gsm);
 
@@ -147,6 +164,10 @@ public class PlayState extends States {
         }
         peaShooter.render(sb);
         sunFlower.render(sb);
+
+        for (Lawnmowers lawnmower : lawnmowers) {
+            lawnmower.render(sb);
+        }
 
         for (int i = 0; i < peaOnScreen.size(); i++)
             peaOnScreen.get(i).render(sb);
