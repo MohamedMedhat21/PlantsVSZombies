@@ -42,7 +42,7 @@ public class singlePea {
 
     public void update(float dt, GameStateManager gsm) {
         if (position.getKey() >= Gdx.graphics.getWidth())
-            position = new Pair<>(peaShooterOfPea.getPosition().getKey() + (peaShooterOfPea.getPeaShooterGIF().getWidth() + 20) / 2, peaShooterOfPea.getPosition().getValue() + (peaShooterOfPea.getPeaShooterGIF().getHeight() + 20) / 2);
+            position = new Pair<>(peaShooterOfPea.getPosition().getKey() + (peaShooterOfPea.getPicOfPlant().getWidth() + 20) / 2, peaShooterOfPea.getPosition().getValue() + (peaShooterOfPea.getPicOfPlant().getHeight() + 20) / 2);
         else
             position = new Pair<Integer, Integer>(position.getKey() + (int) (speed), position.getValue());
     }

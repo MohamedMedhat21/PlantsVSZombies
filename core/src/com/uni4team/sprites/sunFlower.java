@@ -5,27 +5,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import javafx.util.Pair;
 
 public class sunFlower extends plant {
-    private Texture sunFlowerGIF;
-    private Pair<Integer, Integer> position;
     private boolean hasSun;
-    private final int costOfSunFlower;
     private Sun sun;
 
     public sunFlower(int x, int y) {
-        sunFlowerGIF = new Texture("SunFlower1Resized.gif");
+        picOfPlant = new Texture("SunFlower1Resized.gif");
         position = new Pair(x, y);
-        costOfSunFlower = 50;
+        costOfPlant = 50;
         this.setHpPoints(1000);
         hasSun = false;
-    }
-
-    public void setPosition(int x, int y) {
-        this.position = new Pair<>(x, y);
-
-    }
-
-    public int getCostOfSunFlower() {
-        return costOfSunFlower;
     }
 
     public Sun getSun() {
@@ -47,19 +35,4 @@ public class sunFlower extends plant {
     public void PeaShoot(int timeToShoot) {
     }
 
-    public Texture getSunFlowerGIF() {
-        return sunFlowerGIF;
-    }
-
-    public void render(SpriteBatch sb) {
-        sb.draw(sunFlowerGIF, position.getKey(), position.getValue());
-    }
-
-    public Pair<Integer, Integer> getPosition() {
-        return position;
-    }
-
-    public void dispose() {
-        sunFlowerGIF.dispose();
-    }
 }
