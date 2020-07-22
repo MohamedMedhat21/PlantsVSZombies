@@ -1,6 +1,7 @@
 package com.uni4team.sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.uni4team.states.GameStateManager;
 import javafx.util.Pair;
@@ -12,6 +13,7 @@ public class singlePea {
     private Texture peaTexture;
     private PeaShooter peaShooterOfPea;
     private static final int hitCost = 600;
+    private Music music;
 
     public static int getHitCost() {
         return hitCost;
@@ -41,6 +43,12 @@ public class singlePea {
     }
 
     public void update(float dt, GameStateManager gsm) {
+        if(position.getKey() == (peaShooterOfPea.getPosition().getKey() + (peaShooterOfPea.getPicOfPlant().getWidth() + 20) / 2) &&
+        position.getValue() == (peaShooterOfPea.getPosition().getValue() + (peaShooterOfPea.getPicOfPlant().getHeight() + 20) / 2)){
+            music = Gdx.audio.newMusic(Gdx.files.internal("Throw.ogg"));
+            music.setVolume(0.3f);
+            music.play();
+        }
         if (position.getKey() >= Gdx.graphics.getWidth())
             position = new Pair<>(peaShooterOfPea.getPosition().getKey() + (peaShooterOfPea.getPicOfPlant().getWidth() + 20) / 2, peaShooterOfPea.getPosition().getValue() + (peaShooterOfPea.getPicOfPlant().getHeight() + 20) / 2);
         else
@@ -49,5 +57,6 @@ public class singlePea {
 
     public void dispose() {
         peaTexture.dispose();
+        music.dispose();
     }
 }

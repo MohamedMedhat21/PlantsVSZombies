@@ -1,6 +1,7 @@
 package com.uni4team.sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.uni4team.states.GameStateManager;
@@ -35,10 +36,8 @@ public class Sun {
     public void update(float dt, GameStateManager gsm) {
         if(fromTop == true){
             speed = 4;
-            if (position.getValue() < -70){
-                System.out.println("sun disposed");
+            if (position.getValue() < -70)
                 this.dispose();
-            }
             else
                 position = new Pair<Integer, Integer>(position.getKey(), position.getValue() - (int)(speed));
         }

@@ -1,6 +1,7 @@
 package com.uni4team.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -30,6 +31,7 @@ public class PlayState extends States {
     private List<sunFlower> sunFlowersOnScreen;
     private List<singlePea> singlePeas;
     private List<Sun> sunsRandom;
+    private Music musicOfSun;
     //------------------------------------------------------
     private StandardZombie standardZombie;
     private Array<Lawnmowers> lawnmowers;
@@ -59,7 +61,7 @@ public class PlayState extends States {
         plantSun = 5;
         drawSun = 0;
         Score = 50;
-        timer = 100;
+        timer = 500;
         sunsRandom = new ArrayList<>();
         Zombies.arrayOfZombies = new Array<Zombies>();
         lawnmowers = new Array<Lawnmowers>();
@@ -256,6 +258,12 @@ public class PlayState extends States {
         spriteBatch.end();
     }
 
+    public void playSunMusic(){
+        musicOfSun = Gdx.audio.newMusic(Gdx.files.internal("SunSound.ogg"));
+        musicOfSun.setVolume(0.3f);
+        musicOfSun.play();
+    }
+
     @Override
     public void render(SpriteBatch sb) {
         plantSun++;
@@ -311,6 +319,7 @@ public class PlayState extends States {
                         if (posx >= sunFlowersOnScreen.get(k).getPosition().getKey() && posx <= sunFlowersOnScreen.get(k).getPosition().getKey() + 30 &&
                                 posy >= sunFlowersOnScreen.get(k).getPosition().getValue() && posy <= sunFlowersOnScreen.get(k).getPosition().getValue() + 30) {
                             Score += 25;
+                            playSunMusic();
                             sunFlowersOnScreen.get(k).setHasSun(false);
                             sunFlowersOnScreen.get(k).getSun().dispose();
                             clickedOnSunOfSunFlower = true;
@@ -323,6 +332,7 @@ public class PlayState extends States {
                         if(posx >= sunsRandom.get(i).getPosition().getKey() && posx <= sunsRandom.get(i).getPosition().getKey() + 100 &&
                            posy >= sunsRandom.get(i).getPosition().getValue() && posy <= sunsRandom.get(i).getPosition().getValue() + 100){
                             Score += 25;
+                            playSunMusic();
                             sunsRandom.get(i).setPosition(5000, 5000);
                             sunsRandom.get(i).dispose();
                         }
@@ -351,5 +361,6 @@ public class PlayState extends States {
         peaShooter.dispose();
         sunFlower.dispose();
         bg.dispose();
+        musicOfSun.dispose();
     }
 }
