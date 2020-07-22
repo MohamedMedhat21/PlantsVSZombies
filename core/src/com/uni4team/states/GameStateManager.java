@@ -7,28 +7,28 @@ import java.util.Stack;
 public class GameStateManager {
     private Stack<States> states;
 
-    public GameStateManager(){
+    public GameStateManager() {
         states = new Stack<States>();
     }
 
-    public void push(States state){
+    public void push(States state) {
         this.states.push(state);
     }
 
-    public void pop(){
+    public void pop() {
         this.states.pop().dispose();
     }
 
-    public void set(States state){
+    public void set(States state) {
         this.states.pop().dispose();
         this.states.push(state);
     }
 
-    public void update(float dt){
+    public void update(float dt) {
         states.peek().update(dt);
     }
 
-    public void render(SpriteBatch sb){
+    public void render(SpriteBatch sb) {
         states.peek().render(sb);
     }
 }

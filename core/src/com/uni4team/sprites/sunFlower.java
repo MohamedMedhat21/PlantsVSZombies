@@ -1,16 +1,17 @@
 package com.uni4team.sprites;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import javafx.util.Pair;
 
-public class sunFlower extends plant{
+public class sunFlower extends plant {
     private Texture sunFlowerGIF;
     private Pair<Integer, Integer> position;
     private boolean hasSun;
     private final int costOfSunFlower;
     private Sun sun;
 
-    public sunFlower(int x , int y){
+    public sunFlower(int x, int y) {
         sunFlowerGIF = new Texture("SunFlower1Resized.gif");
         position = new Pair(x, y);
         costOfSunFlower = 50;
@@ -19,10 +20,11 @@ public class sunFlower extends plant{
     }
 
     public void setPosition(int x, int y) {
-        this.position=new Pair<>(x,y);
+        this.position = new Pair<>(x, y);
 
     }
-    public int getCostOfSunFlower(){
+
+    public int getCostOfSunFlower() {
         return costOfSunFlower;
     }
 
@@ -34,18 +36,18 @@ public class sunFlower extends plant{
         sun = sunTemp;
     }
 
-    public boolean getHasSun(){
+    public boolean getHasSun() {
         return hasSun;
     }
 
-    public void setHasSun(boolean temp){
+    public void setHasSun(boolean temp) {
         hasSun = temp;
     }
 
-    public void PeaShoot(int timeToShoot){
+    public void PeaShoot(int timeToShoot) {
     }
 
-    public Texture getSunFlowerGIF(){
+    public Texture getSunFlowerGIF() {
         return sunFlowerGIF;
     }
 
@@ -53,11 +55,11 @@ public class sunFlower extends plant{
         sb.draw(sunFlowerGIF, position.getKey(), position.getValue());
     }
 
-    public Pair<Integer, Integer> getPosition(){
+    public Pair<Integer, Integer> getPosition() {
         return position;
     }
 
-    public void dispose(){
+    public void dispose() {
         sunFlowerGIF.dispose();
     }
 }

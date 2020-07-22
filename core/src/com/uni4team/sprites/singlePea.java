@@ -1,4 +1,5 @@
 package com.uni4team.sprites;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.uni4team.states.GameStateManager;
@@ -10,7 +11,8 @@ public class singlePea {
     private Pair<Integer, Integer> position;
     private Texture peaTexture;
     private PeaShooter peaShooterOfPea;
-    private static final int hitCost=600;
+    private static final int hitCost = 600;
+
     public static int getHitCost() {
         return hitCost;
     }
@@ -22,12 +24,11 @@ public class singlePea {
         this.speed = speed;
     }
 
-    public Texture getTexture()
-    {
+    public Texture getTexture() {
         return peaTexture;
     }
 
-    public void setPosition(int x,int y) {
+    public void setPosition(int x, int y) {
         this.position = new Pair(x, y);
     }
 
@@ -40,13 +41,13 @@ public class singlePea {
     }
 
     public void update(float dt, GameStateManager gsm) {
-        if(position.getKey() >= Gdx.graphics.getWidth())
-            position = new Pair<>(peaShooterOfPea.getPosition().getKey()  + (peaShooterOfPea.getPeaShooterGIF().getWidth() + 20)  / 2 , peaShooterOfPea.getPosition().getValue() + (peaShooterOfPea.getPeaShooterGIF().getHeight() + 20) / 2);
+        if (position.getKey() >= Gdx.graphics.getWidth())
+            position = new Pair<>(peaShooterOfPea.getPosition().getKey() + (peaShooterOfPea.getPeaShooterGIF().getWidth() + 20) / 2, peaShooterOfPea.getPosition().getValue() + (peaShooterOfPea.getPeaShooterGIF().getHeight() + 20) / 2);
         else
-            position = new Pair<Integer, Integer>(position.getKey() + (int)(speed), position.getValue());
+            position = new Pair<Integer, Integer>(position.getKey() + (int) (speed), position.getValue());
     }
 
-    public void dispose(){
+    public void dispose() {
         peaTexture.dispose();
     }
 }

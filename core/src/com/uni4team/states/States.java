@@ -8,7 +8,7 @@ public abstract class States {
     protected Vector3 mouse;
     protected GameStateManager gsm;
 
-    protected States(GameStateManager gsm){
+    protected States(GameStateManager gsm) {
         this.gsm = gsm;
         mouse = new Vector3();
     }

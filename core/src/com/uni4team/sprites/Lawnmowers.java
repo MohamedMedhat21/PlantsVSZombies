@@ -7,36 +7,48 @@ import com.badlogic.gdx.math.Vector2;
 public class Lawnmowers {
     private Texture lawnmowerGIF;
     private Vector2 position;
-    int velocity;
+    int speed;
+
     public Lawnmowers(int x, int y) {
         position = new Vector2(x, y);
         lawnmowerGIF = new Texture("lawnmower.png");
-        velocity = 0;
+        speed = 0;
     }
+
     public Texture getLawnmowerGIF() {
         return lawnmowerGIF;
     }
+
     public Vector2 getPosition() {
         return position;
     }
+
     public void setPosition(Vector2 position) {
         this.position = position;
     }
-    public int getVelocity() {
-        return velocity;
+
+    public int getSpeed() {
+        return speed;
     }
-    public void setVelocity(int velocity) {
-        this.velocity = velocity;
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
 
     public void render(SpriteBatch sb) {
         sb.draw(lawnmowerGIF, position.x, position.y);
     }
+
     public void dispose() {
         lawnmowerGIF.dispose();
     }
-    public void update(float dt) {
 
+    public void update(float dt) {
+        position.x += speed;
+        if (position.x > 1000) {
+            position.y = 5000;
+            dispose();
+        }
     }
 }

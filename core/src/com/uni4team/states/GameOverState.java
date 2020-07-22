@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.graphics.Color;
 
 
-
 public class GameOverState extends States {
     private Label GameOver;
     private Label score;

@@ -7,9 +7,10 @@ import javafx.util.Pair;
 
 public class PeaShooter extends plant {
     private Texture peaShooterGIF;
-    private Pair<Integer ,Integer> position;
+    private Pair<Integer, Integer> position;
     private final int costOfPeaShooter;
-    public PeaShooter(int x , int y){
+
+    public PeaShooter(int x, int y) {
         peaShooterGIF = new Texture("PeaShooter2.gif");
         position = new Pair(x, y);
         costOfPeaShooter = 25;
@@ -29,7 +30,7 @@ public class PeaShooter extends plant {
     }
 
     public void setPosition(int x, int y) {
-        this.position=new Pair<>(x,y);
+        this.position = new Pair<>(x, y);
 
     }
 
@@ -37,13 +38,14 @@ public class PeaShooter extends plant {
         return costOfPeaShooter;
     }
 
-    public void PeaShoot(int timeToShoot){
+    public void PeaShoot(int timeToShoot) {
     }
 
     public void render(SpriteBatch sb) {
         sb.draw(peaShooterGIF, position.getKey(), position.getValue());
     }
-    public void dispose(){
+
+    public void dispose() {
         peaShooterGIF.dispose();
     }
 }

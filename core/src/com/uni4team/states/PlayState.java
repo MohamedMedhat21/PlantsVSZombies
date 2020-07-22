@@ -68,9 +68,9 @@ public class PlayState extends States {
             int last = 600;
             for (int j = 0; j < 10 + rand.nextInt(10); j++) {
                 last = last + Zombies.distanceBetweenZombies + rand.nextInt(200);
-                int choosen=rand.nextInt(2);
-                if(choosen==0)
-                Zombies.arrayOfZombies.add(new StandardZombie(1200, last, Zombies.main5RowPositions[i], 0.2f));
+                int choosen = rand.nextInt(2);
+                if (choosen == 0)
+                    Zombies.arrayOfZombies.add(new StandardZombie(1200, last, Zombies.main5RowPositions[i], 0.2f));
                 else Zombies.arrayOfZombies.add(new bucketHeadZombie(1200, last, Zombies.main5RowPositions[i], 0.2f));
             }
         }
@@ -89,40 +89,40 @@ public class PlayState extends States {
         // collision of zombies with peas
         for (Zombies zombie : Zombies.arrayOfZombies) {
             for (singlePea pea : singlePeas) {
-                if(zombie.getZombieState()==3)continue;
-               if(zombie.getPosition().y + 64 == pea.getPosition().getValue() &&
-                       zombie.getPosition().x + 25 < pea.getPosition().getKey() && pea.getPosition().getKey() < zombie.getPosition().x + 30){
+                if (zombie.getZombieState() == 3) continue;
+                if (zombie.getPosition().y + 64 == pea.getPosition().getValue() &&
+                        zombie.getPosition().x + 25 < pea.getPosition().getKey() && pea.getPosition().getKey() < zombie.getPosition().x + 30) {
 
-                   boolean isDead=zombie.hit(singlePea.getHitCost());
-                   pea.setPosition(pea.getPosition().getKey(),5000);
-                   if(isDead) {
-                       zombie.setSpeed(0);
-                       zombie.setZombieState(3);
-                       Zombies.deadCnt++;
+                    boolean isDead = zombie.hit(singlePea.getHitCost());
+                    pea.setPosition(pea.getPosition().getKey(), 5000);
+                    if (isDead) {
+                        zombie.setSpeed(0);
+                        zombie.setZombieState(3);
+                        Zombies.deadCnt++;
 
-                       // when zombie dies decrease the distance between zombies
-                       // and adding another one int the end if the size of the array mod 5 == 0
-                       Zombies.distanceBetweenZombies -= 50;
-                       if (Zombies.distanceBetweenZombies < 10) Zombies.distanceBetweenZombies = 10;
-                       if (Zombies.deadCnt % 5 == 0) {
-                           Zombies.arrayOfZombies.add(new StandardZombie(1200, 2000 + rand.nextInt(5000), Zombies.main5RowPositions[rand.nextInt(5)], 0.2f));
-                       }
-                       // the only thing left is respawn the died zombie on a different coordinate
-                   }
+                        // when zombie dies decrease the distance between zombies
+                        // and adding another one int the end if the size of the array mod 5 == 0
+                        Zombies.distanceBetweenZombies -= 50;
+                        if (Zombies.distanceBetweenZombies < 10) Zombies.distanceBetweenZombies = 10;
+                        if (Zombies.deadCnt % 5 == 0) {
+                            Zombies.arrayOfZombies.add(new StandardZombie(1200, 2000 + rand.nextInt(5000), Zombies.main5RowPositions[rand.nextInt(5)], 0.2f));
+                        }
+                        // the only thing left is respawn the died zombie on a different coordinate
+                    }
                 }
             }
         }
         for (Zombies zombie : Zombies.arrayOfZombies) {
             // collision of zombies with sun flower
             for (sunFlower flower : sunFlowersOnScreen) {
-                if(zombie.getZombieState()!=3&&zombie.getPosition().y + 5 == flower.getPosition().getValue() &&
-                        zombie.getPosition().x + 10 < flower.getPosition().getKey() && flower.getPosition().getKey() < zombie.getPosition().x + 20){
+                if (zombie.getZombieState() != 3 && zombie.getPosition().y + 5 == flower.getPosition().getValue() &&
+                        zombie.getPosition().x + 10 < flower.getPosition().getKey() && flower.getPosition().getKey() < zombie.getPosition().x + 20) {
 
                     zombie.setSpeed(0);
-                    if(zombie.getZombieState()!=2)zombie.setZombieState(2);
-                    boolean isDead=flower.hit(zombie.getHitCost());
-                    if(isDead){
-                        flower.setPosition(5000,5000);
+                    if (zombie.getZombieState() != 2) zombie.setZombieState(2);
+                    boolean isDead = flower.hit(zombie.getHitCost());
+                    if (isDead) {
+                        flower.setPosition(5000, 5000);
                         flower.dispose();
                         zombie.setZombieState(1);
                         zombie.setSpeed(0.2f);
@@ -131,14 +131,14 @@ public class PlayState extends States {
             }
             // collision of zombies with pea shooter
             for (PeaShooter shooter : peaOnScreen) {
-                if(zombie.getZombieState()!=3&&zombie.getPosition().y + 5 == shooter.getPosition().getValue() &&
-                        zombie.getPosition().x + 10 < shooter.getPosition().getKey() && shooter.getPosition().getKey() < zombie.getPosition().x + 20){
+                if (zombie.getZombieState() != 3 && zombie.getPosition().y + 5 == shooter.getPosition().getValue() &&
+                        zombie.getPosition().x + 10 < shooter.getPosition().getKey() && shooter.getPosition().getKey() < zombie.getPosition().x + 20) {
 
                     zombie.setSpeed(0);
-                    if(zombie.getZombieState()!=2)zombie.setZombieState(2);
-                    boolean isDead=shooter.hit(zombie.getHitCost());
-                    if(isDead){
-                        shooter.setPosition(5000,5000);
+                    if (zombie.getZombieState() != 2) zombie.setZombieState(2);
+                    boolean isDead = shooter.hit(zombie.getHitCost());
+                    if (isDead) {
+                        shooter.setPosition(5000, 5000);
                         shooter.dispose();
                         zombie.setZombieState(1);
                         zombie.setSpeed(0.2f);
@@ -151,7 +151,10 @@ public class PlayState extends States {
             for (Zombies zombie : Zombies.arrayOfZombies) {
                 if (lawnmower.getPosition().y == zombie.getPosition().y &&
                         lawnmower.getPosition().x < zombie.getPosition().x && zombie.getPosition().x < lawnmower.getPosition().x + 10) {
-                    //zombie.dispose();
+                    lawnmower.setSpeed(5);
+                    zombie.setSpeed(0f);
+                    if (zombie.getZombieState() != 3)
+                        zombie.setZombieState(3);
                 }
             }
         }
@@ -160,13 +163,17 @@ public class PlayState extends States {
 
         for (singlePea pea : singlePeas)
             pea.update(dt, gsm);
-        for(Zombies zombie : Zombies.arrayOfZombies) {
-            if (zombie.getZombieState()==3 && zombie.getZombieHeadAnimation().isTaken()) {
-                    zombie.setZombieState(1);
-                    zombie.setHpPoint(1200);
-                    zombie.setSpeed(0.2f);
-                    zombie.setPosition(2000+rand.nextInt(5000),(int)zombie.getPosition().y);
+        for (Zombies zombie : Zombies.arrayOfZombies) {
+            if (zombie.getZombieState() == 3 && zombie.getZombieHeadAnimation().isTaken()) {
+                zombie.setZombieState(1);
+                zombie.setHpPoint(1200);
+                zombie.setSpeed(0.2f);
+                zombie.setPosition(2000 + rand.nextInt(5000), (int) zombie.getPosition().y);
             }
+        }
+
+        for (Lawnmowers lawnmower : lawnmowers) {
+            lawnmower.update(dt);
         }
     }
 
@@ -186,18 +193,18 @@ public class PlayState extends States {
         for (int i = 0; i < peaOnScreen.size(); i++)
             peaOnScreen.get(i).render(sb);
 
-        for(int i = 0; i < sunFlowersOnScreen.size(); i++){
+        for (int i = 0; i < sunFlowersOnScreen.size(); i++) {
             sunFlowersOnScreen.get(i).render(sb);
-            if(sunFlowersOnScreen.get(i).getHasSun() == true)
+            if (sunFlowersOnScreen.get(i).getHasSun() == true)
                 sunFlowersOnScreen.get(i).getSun().render(sb, sunFlowersOnScreen.get(i).getPosition().getKey(), sunFlowersOnScreen.get(i).getPosition().getValue());
-            else if(plantSun % 500 == 0){
+            else if (plantSun % 500 == 0) {
                 sunFlowersOnScreen.get(i).setSun(new Sun(sunFlowersOnScreen.get(i).getPosition().getKey(), sunFlowersOnScreen.get(i).getPosition().getValue()));
                 sunFlowersOnScreen.get(i).setHasSun(true);
             }
         }
 
-        for (int i = 0 ; i < singlePeas.size() ; i++)
-            sb.draw(singlePeas.get(i).getTexture(),singlePeas.get(i).getPosition().getKey(), singlePeas.get(i).getPosition().getValue());
+        for (int i = 0; i < singlePeas.size(); i++)
+            sb.draw(singlePeas.get(i).getTexture(), singlePeas.get(i).getPosition().getKey(), singlePeas.get(i).getPosition().getValue());
         for (Zombies zombie : Zombies.arrayOfZombies) {
             zombie.render(sb);
         }
@@ -221,8 +228,7 @@ public class PlayState extends States {
             if (Score >= peaShooter.getCostOfPeaShooter() && posx >= peaShooter.getPosition().getKey() && posx <= peaShooter.getPosition().getKey() + peaShooter.getPeaShooterGIF().getWidth() && posy >= peaShooter.getPosition().getValue() && posy <= peaShooter.getPeaShooterGIF().getHeight() + peaShooter.getPosition().getValue()) {
                 selectSunFlower = false;
                 selectPeashooter = true;
-            }
-            else if (selectPeashooter) {
+            } else if (selectPeashooter) {
                 selectPeashooter = false;
                 Set<Pair<Integer, Integer>> st = positions.keySet();
                 for (Pair<Integer, Integer> pr : st) {
@@ -230,18 +236,16 @@ public class PlayState extends States {
                         Score -= peaShooter.getCostOfPeaShooter();
                         PeaShooter pea = new PeaShooter(pr.getKey(), pr.getValue());
                         peaOnScreen.add(pea);
-                        singlePeas.add(new singlePea(pea.getPosition().getKey() + ((pea.getPeaShooterGIF().getWidth() + 20)/2), pea.getPosition().getValue() + ((pea.getPeaShooterGIF().getHeight() + 20)/2),4f, pea));
+                        singlePeas.add(new singlePea(pea.getPosition().getKey() + ((pea.getPeaShooterGIF().getWidth() + 20) / 2), pea.getPosition().getValue() + ((pea.getPeaShooterGIF().getHeight() + 20) / 2), 4f, pea));
                         positions.remove(pr);
                         positions.put(pr, false);
                         break;
                     }
                 }
-            }
-            else if (Score >= sunFlower.getCostOfSunFlower() && posx >= sunFlower.getPosition().getKey() && posx <= sunFlower.getPosition().getKey() + sunFlower.getSunFlowerGIF().getWidth() && posy >= sunFlower.getPosition().getValue() && posy <= sunFlower.getSunFlowerGIF().getHeight() + sunFlower.getPosition().getValue()) {
+            } else if (Score >= sunFlower.getCostOfSunFlower() && posx >= sunFlower.getPosition().getKey() && posx <= sunFlower.getPosition().getKey() + sunFlower.getSunFlowerGIF().getWidth() && posy >= sunFlower.getPosition().getValue() && posy <= sunFlower.getSunFlowerGIF().getHeight() + sunFlower.getPosition().getValue()) {
                 selectPeashooter = false;
                 selectSunFlower = true;
-            }
-            else if (selectSunFlower) {
+            } else if (selectSunFlower) {
                 selectSunFlower = false;
                 Set<Pair<Integer, Integer>> st = positions.keySet();
                 for (Pair<Integer, Integer> pr : st) {
@@ -254,12 +258,11 @@ public class PlayState extends States {
                         break;
                     }
                 }
-            }
-            else {
-                for(int k = 0; k < sunFlowersOnScreen.size(); k++){
-                    if(sunFlowersOnScreen.get(k).getHasSun() == true){
-                        if(posx >= sunFlowersOnScreen.get(k).getPosition().getKey() &&  posx <= sunFlowersOnScreen.get(k).getPosition().getKey() + 30 &&
-                        posy >= sunFlowersOnScreen.get(k).getPosition().getValue() && posy <= sunFlowersOnScreen.get(k).getPosition().getValue() + 30){
+            } else {
+                for (int k = 0; k < sunFlowersOnScreen.size(); k++) {
+                    if (sunFlowersOnScreen.get(k).getHasSun() == true) {
+                        if (posx >= sunFlowersOnScreen.get(k).getPosition().getKey() && posx <= sunFlowersOnScreen.get(k).getPosition().getKey() + 30 &&
+                                posy >= sunFlowersOnScreen.get(k).getPosition().getValue() && posy <= sunFlowersOnScreen.get(k).getPosition().getValue() + 30) {
                             Score += 25;
                             sunFlowersOnScreen.get(k).setHasSun(false);
                             sunFlowersOnScreen.get(k).getSun().dispose();
@@ -272,11 +275,11 @@ public class PlayState extends States {
 
         if (selectPeashooter) {
             shape.begin(ShapeRenderer.ShapeType.Line);
-            shape.rect(peaShooter.getPosition().getKey(), peaShooter.getPosition().getValue(), peaShooter.getPeaShooterGIF().getWidth(),peaShooter.getPeaShooterGIF().getHeight());
+            shape.rect(peaShooter.getPosition().getKey(), peaShooter.getPosition().getValue(), peaShooter.getPeaShooterGIF().getWidth(), peaShooter.getPeaShooterGIF().getHeight());
             shape.setColor(Color.BLUE);
             shape.end();
         }
-        if(selectSunFlower){
+        if (selectSunFlower) {
             shape.begin(ShapeRenderer.ShapeType.Line);
             shape.rect(sunFlower.getPosition().getKey(), sunFlower.getPosition().getValue(), sunFlower.getSunFlowerGIF().getWidth() + 1, sunFlower.getSunFlowerGIF().getHeight());
             shape.setColor(Color.BLUE);

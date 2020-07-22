@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.uni4team.PlantsVSZombiesGame;
 
-public class MenuState extends States{
+public class MenuState extends States {
     private Texture background;
     private int backgroundWidth, backgroundHeight;
 
@@ -18,7 +18,7 @@ public class MenuState extends States{
 
     @Override
     public void handleInput() {
-        if(Gdx.input.justTouched()){
+        if (Gdx.input.justTouched()) {
             gsm.set(new PlayState(gsm));
         }
     }

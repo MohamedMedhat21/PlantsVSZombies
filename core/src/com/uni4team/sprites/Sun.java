@@ -14,8 +14,7 @@ public class Sun {
         position = new Pair(x, y);
     }
 
-    public Texture getTexture()
-    {
+    public Texture getTexture() {
         return sunGIF;
     }
 
@@ -26,7 +25,7 @@ public class Sun {
     public void update(float dt, GameStateManager gsm) {
     }
 
-    public Pair<Integer, Integer> getPosition(){
+    public Pair<Integer, Integer> getPosition() {
         return position;
     }
 
@@ -34,7 +33,7 @@ public class Sun {
         sb.draw(sunGIF, x, y);
     }
 
-    public void dispose(){
+    public void dispose() {
         sunGIF.dispose();
     }
 }
