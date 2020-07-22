@@ -67,22 +67,22 @@ public class PlayState extends States {
         for (int i = 0; i < 5; i++) {
             lawnmowers.add(new Lawnmowers(170, Zombies.main5RowPositions[i]));
         }
-
-        for (int i = 0; i < 5; i++) {
-            int last = 600;
-            for (int j = 0; j < 10 + rand.nextInt(10); j++) {
-                last = last + 600 + rand.nextInt(200);
-                int choosen = rand.nextInt(2);
-                if (choosen == 0)
-                    Zombies.arrayOfZombies.add(new StandardZombie(1000, last, Zombies.main5RowPositions[i], 0.2f));
-                else Zombies.arrayOfZombies.add(new bucketHeadZombie(1500, last, Zombies.main5RowPositions[i], 0.3f));
+        while(Zombies.arrayOfZombies.size == 0) {
+            for (int i = 0; i < 5; i++) {
+                int last = 400;
+                for (int j = 0; j < (rand.nextInt(2) == 0 ? 0 : rand.nextInt(10)); j++) {
+                    last = last + 200 + rand.nextInt(500);
+                    int choose = rand.nextInt(4);
+                    if (choose != 0)
+                        Zombies.arrayOfZombies.add(new StandardZombie(1000, last, Zombies.main5RowPositions[i], 0.2f));
+                    else
+                        Zombies.arrayOfZombies.add(new bucketHeadZombie(1500, last, Zombies.main5RowPositions[i], 0.3f));
+                }
             }
         }
-
         for (int w = (int) (firstBottomRectangle.getX()); w < backgroundWidth - 50; w += firstBottomRectangle.width) {
-            for (int h = (int) (firstBottomRectangle.getY()); h < backgroundHeight; h += firstBottomRectangle.height) {
+            for (int h = (int) (firstBottomRectangle.getY()); h < backgroundHeight; h += firstBottomRectangle.height)
                 positions.put(new Pair(w, h), true);
-            }
         }
     }
 
@@ -92,12 +92,13 @@ public class PlayState extends States {
 
     @Override
     public void update(float dt) {
-        // collision of zombies with peas
         for (Zombies zombie : Zombies.arrayOfZombies) {
+            // collision of zombies with peas
             for (singlePea pea : singlePeas) {
-                if (zombie.getZombieState() == 3) continue;
+                if (zombie.getZombieState() == 3)
+                    continue;
                 if (zombie.getPosition().y + 64 == pea.getPosition().getValue() &&
-                        zombie.getPosition().x + 15 < pea.getPosition().getKey() && pea.getPosition().getKey() < zombie.getPosition().x + 20) {
+                        zombie.getPosition().x + 30 < pea.getPosition().getKey() && pea.getPosition().getKey() < zombie.getPosition().x + 35) {
 
                     boolean isDead = zombie.hit(singlePea.getHitCost());
                     pea.setPosition(pea.getPosition().getKey(), 5000);
@@ -109,27 +110,27 @@ public class PlayState extends States {
                             playerScore++;
                         else
                             playerScore += 2;
-
-                        // when zombie dies decrease the distance between zombies
                         // and adding another one int the end if the size of the array mod 5 == 0
-
-                        if (Zombies.deadCnt % 5 == 0) {
-                            Zombies.arrayOfZombies.add(new StandardZombie(1200, 2000 + rand.nextInt(5000), Zombies.main5RowPositions[rand.nextInt(5)], 0.2f));
+                        if (Zombies.deadCnt % 2 == 0) {
+                            int choose = rand.nextInt(4);
+                            if (choose == 0)
+                                Zombies.arrayOfZombies.add(new StandardZombie(1000, 1000 + rand.nextInt(2000), Zombies.main5RowPositions[rand.nextInt(5)], 0.2f));
+                            else
+                                Zombies.arrayOfZombies.add(new bucketHeadZombie(1500, 1000 + rand.nextInt(2000), Zombies.main5RowPositions[rand.nextInt(5)], 0.3f));
                         }
-                        // the only thing left is respawn the died zombie on a different coordinate
                     }
                 }
             }
         }
-
         for (Zombies zombie : Zombies.arrayOfZombies) {
             // collision of zombies with sun flower
             for (sunFlower flower : sunFlowersOnScreen) {
                 if (zombie.getZombieState() != 3 && zombie.getPosition().y + 5 == flower.getPosition().getValue() &&
-                        zombie.getPosition().x + 10 < flower.getPosition().getKey() && flower.getPosition().getKey() < zombie.getPosition().x + 20) {
+                        zombie.getPosition().x + 10 < flower.getPosition().getKey() && flower.getPosition().getKey() < zombie.getPosition().x + 15) {
 
                     zombie.setSpeed(0);
-                    if (zombie.getZombieState() != 2) zombie.setZombieState(2);
+                    if (zombie.getZombieState() != 2)
+                        zombie.setZombieState(2);
                     boolean isDead = flower.hit(zombie.getHitCost());
                     if (isDead) {
                         positions.remove(flower.getPosition());
@@ -141,18 +142,21 @@ public class PlayState extends States {
                         }
                         flower.dispose();
                         zombie.setZombieState(1);
-                        zombie.setSpeed(0.2f);
+                        if (zombie instanceof StandardZombie)
+                            zombie.setSpeed(0.2f);
+                        else
+                            zombie.setSpeed(0.3f);
                     }
                 }
             }
-
             // collision of zombies with pea shooter
             for (PeaShooter shooter : peaOnScreen) {
                 if (zombie.getZombieState() != 3 && zombie.getPosition().y + 5 == shooter.getPosition().getValue() &&
-                        zombie.getPosition().x - 30 < shooter.getPosition().getKey() && shooter.getPosition().getKey() < zombie.getPosition().x - 20) {
+                        zombie.getPosition().x - 25 < shooter.getPosition().getKey() && shooter.getPosition().getKey() < zombie.getPosition().x - 15) {
 
                     zombie.setSpeed(0);
-                    if (zombie.getZombieState() != 2) zombie.setZombieState(2);
+                    if (zombie.getZombieState() != 2)
+                        zombie.setZombieState(2);
                     boolean isDead = shooter.hit(zombie.getHitCost());
                     if (isDead) {
                         positions.remove(shooter.getPosition());
@@ -160,12 +164,14 @@ public class PlayState extends States {
                         shooter.setPosition(5000, 5000);
                         shooter.dispose();
                         zombie.setZombieState(1);
-                        zombie.setSpeed(0.2f);
+                        if (zombie instanceof StandardZombie)
+                            zombie.setSpeed(0.2f);
+                        else
+                            zombie.setSpeed(0.3f);
                     }
                 }
             }
         }
-
         // collision of zombie with lawnmowers
         for (Lawnmowers lawnmower : lawnmowers) {
             for (Zombies zombie : Zombies.arrayOfZombies) {
@@ -173,13 +179,12 @@ public class PlayState extends States {
                         lawnmower.getPosition().x < zombie.getPosition().x && zombie.getPosition().x < lawnmower.getPosition().x + 10) {
                     lawnmower.setSpeed(5);
                     zombie.setSpeed(0f);
-
                     if (zombie.getZombieState() != 3) {
+                        zombie.setZombieState(3);
                         if (zombie instanceof StandardZombie)
                             playerScore++;
                         else
                             playerScore += 2;
-                        zombie.setZombieState(3);
                     }
                 }
             }
@@ -194,16 +199,21 @@ public class PlayState extends States {
         for (Sun suns : sunsRandom)
             suns.update(dt, gsm);
 
-        for (Lawnmowers lawnmower : lawnmowers) {
+        for (Lawnmowers lawnmower : lawnmowers)
             lawnmower.update(dt);
-        }
 
         for (Zombies zombie : Zombies.arrayOfZombies) {
             if (zombie.getZombieState() == 3 && zombie.getZombieHeadAnimation().isTaken()) {
                 zombie.setZombieState(1);
-                zombie.setHpPoint(1200);
-                zombie.setSpeed(0.2f);
-                zombie.setPosition(2000 + rand.nextInt(5000), (int) zombie.getPosition().y);
+                if (zombie instanceof StandardZombie) {
+                    zombie.setSpeed(0.2f);
+                    zombie.setHpPoint(1000);
+                }
+                else {
+                    zombie.setSpeed(0.3f);
+                    zombie.setHpPoint(1500);
+                }
+                zombie.setPosition(1000 + rand.nextInt(2000), (int)zombie.getPosition().y);
             }
         }
 
