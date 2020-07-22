@@ -1,16 +1,13 @@
 package com.uni4team.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.uni4team.PlantsVSZombiesGame;
 
 public class MenuState extends States {
-    private Texture background;
+    private final Texture background;
     private int backgroundWidth, backgroundHeight;
-    private int stx, width, sty, height;
+    private final int stx, width, sty, height;
 
     public MenuState(GameStateManager gsm) {
         super(gsm);
@@ -28,7 +25,7 @@ public class MenuState extends States {
         if (Gdx.input.justTouched()) {
             int posx = Gdx.input.getX();
             int posy = Gdx.graphics.getHeight() - Gdx.input.getY();
-            if(posx >= stx && posx <= width && posy >= sty && posy <= height)
+            if (posx >= stx && posx <= width && posy >= sty && posy <= height)
                 gsm.set(new PlayState(gsm));
         }
     }

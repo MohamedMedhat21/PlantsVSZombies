@@ -17,30 +17,28 @@ import java.util.*;
 
 
 public class PlayState extends States {
+    protected static int playerScore = 0;
+    private final int timer, backgroundWidth, backgroundHeight, gardenWidth, gardenHeight;
+    private int posx, posy, plantSun, Score, drawSun;
+    private boolean selectPeashooter, selectSunFlower;
+    private Random rand = new Random();
     private Texture bg;
-    private Label scoreLbl;
-    private int backgroundWidth, backgroundHeight, gardenWidth, gardenHeight, posx, posy, plantSun, Score, drawSun;
-    private final int timer;
     private Rectangle firstBottomRectangle;
     private ShapeRenderer shape;
     private PeaShooter peaShooter;
     private sunFlower sunFlower;
     private Map<Pair<Integer, Integer>, Boolean> positions;
-    private boolean selectPeashooter, selectSunFlower;
     private List<PeaShooter> peaOnScreen;
     private List<sunFlower> sunFlowersOnScreen;
     private List<singlePea> singlePeas;
     private List<Sun> sunsRandom;
     private Music musicOfSun;
-    //------------------------------------------------------
-    private StandardZombie standardZombie;
     private Array<Lawnmowers> lawnmowers;
 
-    Random rand = new Random();
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
-        bg = new Texture("backyardEdited.jpg");
+        bg = new Texture("backyardEditedFinal.jpg");
         backgroundWidth = bg.getWidth();
         backgroundHeight = bg.getHeight();
         gardenWidth = 81;
@@ -73,17 +71,19 @@ public class PlayState extends States {
         for (int i = 0; i < 5; i++) {
             int last = 600;
             for (int j = 0; j < 10 + rand.nextInt(10); j++) {
-                last = last + Zombies.distanceBetweenZombies + rand.nextInt(200);
+                last = last + 600 + rand.nextInt(200);
                 int choosen = rand.nextInt(2);
                 if (choosen == 0)
-                    Zombies.arrayOfZombies.add(new StandardZombie(1200, last, Zombies.main5RowPositions[i], 0.2f));
-                else Zombies.arrayOfZombies.add(new bucketHeadZombie(1200, last, Zombies.main5RowPositions[i], 0.2f));
+                    Zombies.arrayOfZombies.add(new StandardZombie(1000, last, Zombies.main5RowPositions[i], 0.2f));
+                else Zombies.arrayOfZombies.add(new bucketHeadZombie(1500, last, Zombies.main5RowPositions[i], 0.3f));
             }
         }
 
-        for (int w = (int) (firstBottomRectangle.getX()); w < backgroundWidth - 50; w += firstBottomRectangle.width)
-            for (int h = (int) (firstBottomRectangle.getY()); h < backgroundHeight; h += firstBottomRectangle.height)
+        for (int w = (int) (firstBottomRectangle.getX()); w < backgroundWidth - 50; w += firstBottomRectangle.width) {
+            for (int h = (int) (firstBottomRectangle.getY()); h < backgroundHeight; h += firstBottomRectangle.height) {
                 positions.put(new Pair(w, h), true);
+            }
+        }
     }
 
     @Override
@@ -97,7 +97,7 @@ public class PlayState extends States {
             for (singlePea pea : singlePeas) {
                 if (zombie.getZombieState() == 3) continue;
                 if (zombie.getPosition().y + 64 == pea.getPosition().getValue() &&
-                        zombie.getPosition().x + 25 < pea.getPosition().getKey() && pea.getPosition().getKey() < zombie.getPosition().x + 30) {
+                        zombie.getPosition().x + 15 < pea.getPosition().getKey() && pea.getPosition().getKey() < zombie.getPosition().x + 20) {
 
                     boolean isDead = zombie.hit(singlePea.getHitCost());
                     pea.setPosition(pea.getPosition().getKey(), 5000);
@@ -105,11 +105,14 @@ public class PlayState extends States {
                         zombie.setSpeed(0);
                         zombie.setZombieState(3);
                         Zombies.deadCnt++;
+                        if (zombie instanceof StandardZombie)
+                            playerScore++;
+                        else
+                            playerScore += 2;
 
                         // when zombie dies decrease the distance between zombies
                         // and adding another one int the end if the size of the array mod 5 == 0
-                        Zombies.distanceBetweenZombies -= 50;
-                        if (Zombies.distanceBetweenZombies < 10) Zombies.distanceBetweenZombies = 10;
+
                         if (Zombies.deadCnt % 5 == 0) {
                             Zombies.arrayOfZombies.add(new StandardZombie(1200, 2000 + rand.nextInt(5000), Zombies.main5RowPositions[rand.nextInt(5)], 0.2f));
                         }
@@ -132,7 +135,7 @@ public class PlayState extends States {
                         positions.remove(flower.getPosition());
                         positions.put(flower.getPosition(), true);
                         flower.setPosition(5000, 5000);
-                        if(flower.getHasSun() == true){
+                        if (flower.getHasSun() == true) {
                             flower.setHasSun(false);
                             flower.getSun().dispose();
                         }
@@ -146,7 +149,7 @@ public class PlayState extends States {
             // collision of zombies with pea shooter
             for (PeaShooter shooter : peaOnScreen) {
                 if (zombie.getZombieState() != 3 && zombie.getPosition().y + 5 == shooter.getPosition().getValue() &&
-                        zombie.getPosition().x + 10 < shooter.getPosition().getKey() && shooter.getPosition().getKey() < zombie.getPosition().x + 20) {
+                        zombie.getPosition().x - 30 < shooter.getPosition().getKey() && shooter.getPosition().getKey() < zombie.getPosition().x - 20) {
 
                     zombie.setSpeed(0);
                     if (zombie.getZombieState() != 2) zombie.setZombieState(2);
@@ -170,8 +173,14 @@ public class PlayState extends States {
                         lawnmower.getPosition().x < zombie.getPosition().x && zombie.getPosition().x < lawnmower.getPosition().x + 10) {
                     lawnmower.setSpeed(5);
                     zombie.setSpeed(0f);
-                    if (zombie.getZombieState() != 3)
+
+                    if (zombie.getZombieState() != 3) {
+                        if (zombie instanceof StandardZombie)
+                            playerScore++;
+                        else
+                            playerScore += 2;
                         zombie.setZombieState(3);
+                    }
                 }
             }
         }
@@ -182,8 +191,12 @@ public class PlayState extends States {
         for (singlePea pea : singlePeas)
             pea.update(dt, gsm);
 
-        for(Sun suns : sunsRandom)
+        for (Sun suns : sunsRandom)
             suns.update(dt, gsm);
+
+        for (Lawnmowers lawnmower : lawnmowers) {
+            lawnmower.update(dt);
+        }
 
         for (Zombies zombie : Zombies.arrayOfZombies) {
             if (zombie.getZombieState() == 3 && zombie.getZombieHeadAnimation().isTaken()) {
@@ -194,12 +207,9 @@ public class PlayState extends States {
             }
         }
 
-        for (Lawnmowers lawnmower : lawnmowers) {
-            lawnmower.update(dt);
-        }
     }
 
-    public void drawElements(SpriteBatch sb){
+    public void drawElements(SpriteBatch sb) {
         sb.begin();
         sb.draw(bg, 0, 0);
 
@@ -234,31 +244,36 @@ public class PlayState extends States {
         sb.end();
     }
 
-    public void drawText(){
+    public void drawText() {
         SpriteBatch spriteBatch;
         BitmapFont textOfScore, textOfCostOfPeaShooter, textOfCostOfSunFlower;
         CharSequence str = String.valueOf(Score);
+        CharSequence plyerStr = String.valueOf(playerScore);
         spriteBatch = new SpriteBatch();
         textOfScore = new BitmapFont();
         textOfCostOfPeaShooter = new BitmapFont();
         textOfCostOfSunFlower = new BitmapFont();
         spriteBatch.begin();
 
-        textOfScore.setColor(Color.BROWN);
-        textOfScore.getData().setScale(2, 2);
-        textOfScore.draw(spriteBatch, str, 28, 113);
+        textOfScore.setColor(Color.BLACK);
+        textOfScore.getData().setScale(1.7f, 1.7f);
+        textOfScore.draw(spriteBatch, plyerStr, 27, 659);
+
+        textOfScore.setColor(Color.BLACK);
+        textOfScore.getData().setScale(1.7f, 1.7f);
+        textOfScore.draw(spriteBatch, str, 27, 102.5f);
 
         textOfCostOfPeaShooter.setColor(Color.WHITE);
-        textOfCostOfPeaShooter.getData().setScale((float)(1.2), (float)(1.2));
+        textOfCostOfPeaShooter.getData().setScale((float) (1.2), (float) (1.2));
         textOfCostOfPeaShooter.draw(spriteBatch, "Cost: 25", 12, 245);
 
         textOfCostOfSunFlower.setColor(Color.WHITE);
-        textOfCostOfSunFlower.getData().setScale((float)(1.2), (float)(1.2));
+        textOfCostOfSunFlower.getData().setScale((float) (1.2), (float) (1.2));
         textOfCostOfSunFlower.draw(spriteBatch, "Cost: 50", 12, 395);
         spriteBatch.end();
     }
 
-    public void playSunMusic(){
+    public void playSunMusic() {
         musicOfSun = Gdx.audio.newMusic(Gdx.files.internal("SunSound.ogg"));
         musicOfSun.setVolume(0.3f);
         musicOfSun.play();
@@ -273,7 +288,7 @@ public class PlayState extends States {
 
         drawText();
 
-        if(drawSun % timer == 0)
+        if (drawSun % timer == 0)
             sunsRandom.add(new Sun(rand.nextInt(gardenWidth * 8) + 250, 700, true));
 
         if (Gdx.input.justTouched()) {
@@ -327,10 +342,10 @@ public class PlayState extends States {
                         }
                     }
                 }
-                if(clickedOnSunOfSunFlower == false){
-                    for(int i = 0; i < sunsRandom.size(); i++){
-                        if(posx >= sunsRandom.get(i).getPosition().getKey() && posx <= sunsRandom.get(i).getPosition().getKey() + 100 &&
-                           posy >= sunsRandom.get(i).getPosition().getValue() && posy <= sunsRandom.get(i).getPosition().getValue() + 100){
+                if (!clickedOnSunOfSunFlower) {
+                    for (int i = 0; i < sunsRandom.size(); i++) {
+                        if (posx >= sunsRandom.get(i).getPosition().getKey() && posx <= sunsRandom.get(i).getPosition().getKey() + 100 &&
+                                posy >= sunsRandom.get(i).getPosition().getValue() && posy <= sunsRandom.get(i).getPosition().getValue() + 100) {
                             Score += 25;
                             playSunMusic();
                             sunsRandom.get(i).setPosition(5000, 5000);
@@ -361,6 +376,5 @@ public class PlayState extends States {
         peaShooter.dispose();
         sunFlower.dispose();
         bg.dispose();
-        musicOfSun.dispose();
     }
 }

@@ -19,20 +19,10 @@ public abstract class plant {
         return (hpPoints > 0 ? false : true);
     }
 
-    public int getHpPoints() {
-        return hpPoints;
-    }
-
-    public void ifZombieIsEating() {
-    }
-
     public Texture getPicOfPlant() {
         return picOfPlant;
     }
 
-    public void setPicOfPlant(Texture picOfPlant) {
-        this.picOfPlant = picOfPlant;
-    }
 
     public Pair<Integer, Integer> getPosition() {
         return position;
@@ -44,10 +34,6 @@ public abstract class plant {
 
     public int getCostOfPlant() {
         return costOfPlant;
-    }
-
-    public void setCostOfPlant(int costOfPlant) {
-        this.costOfPlant = costOfPlant;
     }
 
     public void render(SpriteBatch sb) {

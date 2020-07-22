@@ -9,8 +9,7 @@ import com.uni4team.states.GameStateManager;
 import com.uni4team.states.MenuState;
 
 public class PlantsVSZombiesGame extends ApplicationAdapter {
-    public static final int WIDTH = 1024;
-    public static final int HEIGHT = 768;
+    public static final int WIDTH = 1024, HEIGHT = 768;
     private GameStateManager gsm;
     private SpriteBatch batch;
     private Music music;

@@ -1,7 +1,6 @@
 package com.uni4team.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import javafx.util.Pair;
 
 public class sunFlower extends plant {
@@ -12,7 +11,7 @@ public class sunFlower extends plant {
         picOfPlant = new Texture("SunFlower1Resized.gif");
         position = new Pair(x, y);
         costOfPlant = 50;
-        this.setHpPoints(1000);
+        this.setHpPoints(1200);
         hasSun = false;
     }
 
@@ -32,7 +31,5 @@ public class sunFlower extends plant {
         hasSun = temp;
     }
 
-    public void PeaShoot(int timeToShoot) {
-    }
 
 }

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class Lawnmowers {
-    private Texture lawnmowerGIF;
+    private final Texture lawnmowerGIF;
     private Vector2 position;
     int speed;
 
@@ -15,21 +15,11 @@ public class Lawnmowers {
         speed = 0;
     }
 
-    public Texture getLawnmowerGIF() {
-        return lawnmowerGIF;
-    }
 
     public Vector2 getPosition() {
         return position;
     }
 
-    public void setPosition(Vector2 position) {
-        this.position = position;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
 
     public void setSpeed(int speed) {
         this.speed = speed;

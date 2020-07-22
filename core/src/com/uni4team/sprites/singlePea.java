@@ -12,7 +12,7 @@ public class singlePea {
     private Pair<Integer, Integer> position;
     private Texture peaTexture;
     private PeaShooter peaShooterOfPea;
-    private static final int hitCost = 600;
+    private static final int hitCost = 250;
     private Music music;
 
     public static int getHitCost() {
@@ -38,13 +38,10 @@ public class singlePea {
         return position;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
 
     public void update(float dt, GameStateManager gsm) {
-        if(position.getKey() == (peaShooterOfPea.getPosition().getKey() + (peaShooterOfPea.getPicOfPlant().getWidth() + 20) / 2) &&
-        position.getValue() == (peaShooterOfPea.getPosition().getValue() + (peaShooterOfPea.getPicOfPlant().getHeight() + 20) / 2)){
+        if (position.getKey() == (peaShooterOfPea.getPosition().getKey() + (peaShooterOfPea.getPicOfPlant().getWidth() + 20) / 2) &&
+                position.getValue() == (peaShooterOfPea.getPosition().getValue() + (peaShooterOfPea.getPicOfPlant().getHeight() + 20) / 2)) {
             music = Gdx.audio.newMusic(Gdx.files.internal("Throw.ogg"));
             music.setVolume(0.3f);
             music.play();
