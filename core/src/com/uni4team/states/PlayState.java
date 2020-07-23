@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.uni4team.sprites.*;
 import javafx.util.Pair;
@@ -38,6 +37,7 @@ public class PlayState extends States {
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
+        Zombies.setTextures();
         bg = new Texture("backyardEditedFinal.jpg");
         backgroundWidth = bg.getWidth();
         backgroundHeight = bg.getHeight();
@@ -69,14 +69,14 @@ public class PlayState extends States {
         }
         while(Zombies.arrayOfZombies.size == 0) {
             for (int i = 0; i < 5; i++) {
-                int last = 400;
+                int last = 1000;
                 for (int j = 0; j < (rand.nextInt(2) == 0 ? 0 : rand.nextInt(10)); j++) {
                     last = last + 200 + rand.nextInt(500);
                     int choose = rand.nextInt(4);
                     if (choose != 0)
                         Zombies.arrayOfZombies.add(new StandardZombie(1000, last, Zombies.main5RowPositions[i], 0.2f));
                     else
-                        Zombies.arrayOfZombies.add(new bucketHeadZombie(1500, last, Zombies.main5RowPositions[i], 0.3f));
+                        Zombies.arrayOfZombies.add(new bucketHeadZombie(2000, last, Zombies.main5RowPositions[i], 0.3f));
                 }
             }
         }
@@ -211,9 +211,10 @@ public class PlayState extends States {
                 }
                 else {
                     zombie.setSpeed(0.3f);
-                    zombie.setHpPoint(1500);
+                    zombie.setHpPoint(2000);
                 }
                 zombie.setPosition(1000 + rand.nextInt(2000), (int)zombie.getPosition().y);
+                zombie.getZombieHeadAnimation().setTaken(false);
             }
         }
 
@@ -275,7 +276,7 @@ public class PlayState extends States {
 
         textOfCostOfPeaShooter.setColor(Color.WHITE);
         textOfCostOfPeaShooter.getData().setScale((float) (1.2), (float) (1.2));
-        textOfCostOfPeaShooter.draw(spriteBatch, "Cost: 25", 12, 245);
+        textOfCostOfPeaShooter.draw(spriteBatch, "Cost: 100", 12, 245);
 
         textOfCostOfSunFlower.setColor(Color.WHITE);
         textOfCostOfSunFlower.getData().setScale((float) (1.2), (float) (1.2));
@@ -291,9 +292,9 @@ public class PlayState extends States {
 
     @Override
     public void render(SpriteBatch sb) {
+        Gdx.graphics.setWindowedMode(1024, 768);
         plantSun++;
         drawSun++;
-
         drawElements(sb);
 
         drawText();
@@ -386,5 +387,6 @@ public class PlayState extends States {
         peaShooter.dispose();
         sunFlower.dispose();
         bg.dispose();
+        System.out.println("play state disposed");
     }
 }

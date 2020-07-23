@@ -6,25 +6,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class bucketHeadZombie extends Zombies {
     public bucketHeadZombie(int hpPoint, int x, int y, float speed) {
         super(hpPoint, x, y, speed);
-        zombieTexture = new Texture("Bucketheadzombie.png");
-        animation = new Animation(new TextureRegion(zombieTexture), 15, 8f);
+        zombieAnimation = new Animation(new TextureRegion(zombieTexture2), 15, 8f);
+        zombieAttackAnimation = new Animation(new TextureRegion(zombieAttackTexture2), 11, 4f);
+        zombieDyingAnimation = new Animation(new TextureRegion(zombieDyingTexture), 10, 8f);
+        zombieHeadAnimation = new Animation(new TextureRegion(zombieHeadTexture), 12, 4f);
         arrayOfZombies.add(this);
-    }
-
-    @Override
-    public void convert() {
-        if (this.zombieState == 1) {
-            zombieTexture = new Texture("Bucketheadzombie.png");
-            animation = new Animation(new TextureRegion(zombieTexture), 15, 8f);
-        } else if (this.zombieState == 2) {
-            attackZombieTexture = new Texture("BucketheadZombieAttack.png");
-            animation = new Animation(new TextureRegion(attackZombieTexture), 11, 4f);
-        } else {
-            zombieTexture = new Texture("dyingzombie.png");
-            animation = new Animation(new TextureRegion(zombieTexture), 10, 8f);
-            zombieHead = new Texture("ZombieHead.png");
-            zombieHeadAnimation = new Animation(new TextureRegion(zombieHead), 12, 4f);
-        }
     }
 
     @Override

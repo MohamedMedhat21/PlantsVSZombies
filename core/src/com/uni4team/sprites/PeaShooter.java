@@ -8,7 +8,7 @@ public class PeaShooter extends plant {
     public PeaShooter(int x, int y) {
         picOfPlant = new Texture("PeaShooter2.gif");
         position = new Pair(x, y);
-        costOfPlant = 25;
+        costOfPlant = 100;
         this.setHpPoints(1000);
     }
 

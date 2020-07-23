@@ -24,6 +24,10 @@ public class Animation {
         frame = 0;
     }
 
+    public void setTaken(boolean taken) {
+        this.taken = taken;
+    }
+
     public void update(float dt) {
         currentFrameTime += dt;
         if (currentFrameTime > maxFrameTime) {
