@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.Color;
 public class GameOverState extends States {
     private final Label GameOver;
     private final Texture bg;
-    BitmapFont playerScoreFont;
+    private BitmapFont playerScoreFont;
 
     CharSequence playerStr;
     Stage stage;

@@ -1,15 +1,12 @@
 package com.uni4team.states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 
 public abstract class States {
-    protected Vector3 mouse;
     protected GameStateManager gsm;
 
     protected States(GameStateManager gsm) {
         this.gsm = gsm;
-        mouse = new Vector3();
     }
 
     protected abstract void handleInput();

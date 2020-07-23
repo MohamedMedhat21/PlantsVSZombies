@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Lawnmowers {
     private final Texture lawnmowerGIF;
     private Vector2 position;
-    int speed;
+    private int speed;
 
     public Lawnmowers(int x, int y) {
         position = new Vector2(x, y);

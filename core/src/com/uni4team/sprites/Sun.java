@@ -32,12 +32,12 @@ public class Sun {
     }
 
     public void update(float dt, GameStateManager gsm) {
-        if(fromTop == true){
+        if (fromTop == true) {
             speed = 4;
             if (position.getValue() < -70)
                 this.dispose();
             else
-                position = new Pair<Integer, Integer>(position.getKey(), position.getValue() - (int)(speed));
+                position = new Pair<Integer, Integer>(position.getKey(), position.getValue() - (int) (speed));
         }
     }
 
@@ -46,7 +46,7 @@ public class Sun {
     }
 
     public void render(SpriteBatch sb) {
-        if(fromTop == true)
+        if (fromTop == true)
             sb.draw(sunRandom, position.getKey(), position.getValue());
         else
             sb.draw(sunForFlower, position.getKey(), position.getValue());

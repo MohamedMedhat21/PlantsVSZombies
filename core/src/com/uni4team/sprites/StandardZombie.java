@@ -1,6 +1,5 @@
 package com.uni4team.sprites;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class StandardZombie extends Zombies {

@@ -8,9 +8,9 @@ import com.uni4team.states.GameOverState;
 import com.uni4team.states.GameStateManager;
 
 abstract public class Zombies {
-    protected int hpPoint, zombieState = 1;
-    protected float speed;
-    protected Vector2 position;
+    private int hpPoint, zombieState = 1;
+    private float speed;
+    private Vector2 position;
     protected static Texture zombieTexture, zombieTexture2, zombieAttackTexture, zombieAttackTexture2, zombieDyingTexture, zombieHeadTexture;
     protected Animation zombieAnimation, zombieAttackAnimation, zombieDyingAnimation, zombieHeadAnimation;
     public static Array<Zombies> arrayOfZombies;
