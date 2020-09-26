@@ -7,7 +7,7 @@ import com.uni4team.PlantsVSZombiesGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title="ZombiesVSPlants";
+		config.title="Plants VS Zombies";
 		new LwjglApplication(new PlantsVSZombiesGame(), config);
 	}
 }
