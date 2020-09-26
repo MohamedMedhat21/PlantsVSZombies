@@ -37,24 +37,24 @@ The game includes:
 
 * A welcome screen to start the project
 
-  ![Welcome Screen](https://drive.google.com/file/d/1eIFSWwzNISH6x0-5Nj1xyFhgLEFATonu/view)
+  <img src="https://raw.githubusercontent.com/MohamedMedhat21/PlantsVSZombies/master/screenshots/Welcome.png" alt="Welcome Screen" style="zoom: 67%;" />
 
 * The game starts with 5 rows and 5 lawn mowers in each row, also initially having 50 suns that will later help in buying sunflowers and peashooters. Also, the score will be incremented when killing a zombie.
 
-  ![Starting Screen](https://drive.google.com/file/d/1aU9tN3s2mi5jUT_PMiwZuGhNPkVD3c8P/view)
+  <img src="https://raw.githubusercontent.com/MohamedMedhat21/PlantsVSZombies/master/screenshots/Starting.png" alt="Starting Screen" style="zoom:67%;" />
 
 * Random Suns fall and you can click on them to increase the amount of suns you have. also sunflower produces suns that you can also collect. The zombies numbers increases as time passes that will make it harder to kill all the zombies coming without placing enough peashooters in advance. 
 
-  ![Normal Game Screen](https://drive.google.com/file/d/1bjwfjHfhuv2yG3DTeFBEbUapOB0QSvyV/view)
+  <img src="https://raw.githubusercontent.com/MohamedMedhat21/PlantsVSZombies/master/screenshots/NormalGame.png" alt="Normal Game Screen" style="zoom:67%;" />
 
 * Lawn Mower starts moving once a zombie approaches it, it also kills every zombie it finds in its way.
 
-   ![Lawn Mower](https://drive.google.com/file/d/10Zoo7nog0XXbijuHHzafgtTVcfMW97-g/view)
+   <img src="https://raw.githubusercontent.com/MohamedMedhat21/PlantsVSZombies/master/screenshots/lawnMowerHittingAZombie.png" alt="Lawn Mower" style="zoom:67%;" />
 
-* if a zombie got close to the house and there is no lawn mower to defend the lane, the zombie will enter the house resulting in losing the game.
+* If a zombie got close to the house and there is no lawn mower to defend the lane, the zombie will enter the house resulting in losing the game.
 
-  ![No Lawn Mower](https://drive.google.com/file/d/1eSIVn9qAuqEda2zWrvlOJGCRHMk2zcLd/view)
+  <img src="https://raw.githubusercontent.com/MohamedMedhat21/PlantsVSZombies/master/screenshots/ZombieAndNoLawnMower.png" alt="No Lawn Mower" style="zoom:67%;" />
 
 * Game Over shows the total number of the killed zombies during the game
 
-  ![Game Over](https://drive.google.com/file/d/18GbO7oyuQg7dgvjGDseB6WYkf58_tc3y/view)
+  <img src="https://raw.githubusercontent.com/MohamedMedhat21/PlantsVSZombies/master/screenshots/GameOver.png" alt="Game Over" style="zoom:67%;" />
